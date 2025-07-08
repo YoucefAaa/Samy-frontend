@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${car.price} ${window.getCurrentLanguage && window.getCurrentLanguage() === 'ar' ? 'دج' : 'DA'}
       </p>
       <div class="flex justify-center">
-        <a href="details?id=${car.id}" class="bg-blue-600 text-white text-center py-3 px-80 lg:px-8 rounded-full text-[3rem] lg:text-lg font-semibold hover:bg-blue-700 transition">
+        <a href="details.html?id=${car.id}" class="bg-blue-600 text-white text-center py-3 px-80 lg:px-8 rounded-full text-[3rem] lg:text-lg font-semibold hover:bg-blue-700 transition">
           ${window.getTranslation ? window.getTranslation('view-more') : 'Voir Plus'}
         </a>
       </div>
