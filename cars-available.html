@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title data-translate="available-cars-title">Voitures Disponibles - Samy Auto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/language.js"></script>
+  <script src="js/renderAvailableCars.js"></script>
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+  
+<meta name="description" content="Samy Auto - Voitures disponibles immédiatement">
+<meta name="keywords" content="voiture, automobile, Algérie, disponible, immédiat">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  
+<header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+  <a href="/" class="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
+    <svg class="w-8 h-8 lg:w-6 lg:h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+    </svg>
+    <span class="text-[2.5rem] lg:text-lg font-medium" data-translate="back">Retour</span>
+  </a>
+
+  <a href="/" class="flex-1 flex justify-center">
+    <img src="images/logo.png" alt="Logo" class="h-40 lg:h-[3rem]">
+  </a>
+
+  <button id="language-toggle" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-10 py-5 lg:px-4 lg:py-2 rounded-full text-[2rem] lg:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 ease-in-out flex items-center gap-2">
+    <span id="next-lang" class="tracking-wide">AR</span>
+  </button>
+</header>
+
+  <main class="flex-grow p-4">
+    <div class="text-center mb-8">
+      <h1 class="text-[4.5rem] lg:text-3xl font-bold text-gray-800 mb-4" data-translate="Voitures Disponibles">
+        Voitures Disponibles
+      </h1>
+      
+      
+     
+
+    <div id="loading-indicator" class="hidden flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600"></div>
+    </div>
+
+    <div id="card-container" class="grid grid-cols-1 lg:grid-cols-3 gap-4"></div>
+
+
+    <div id="no-results" class="hidden text-center py-12">
+      <div class="bg-white rounded-2xl shadow-lg p-8 lg:p-6 max-w-md mx-auto">
+        <div class="text-gray-400 mb-4">
+          <svg class="w-16 h-16 lg:w-12 lg:h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.137 0-4.146-.832-5.658-2.342C4.832 11.146 4 9.137 4 7c0-4.418 3.582-8 8-8s8 3.582 8 8c0 2.137-.832 4.146-2.342 5.658A7.962 7.962 0 0112 15z"></path>
+          </svg>
+        </div>
+        <h3 class="text-[2.5rem] lg:text-xl font-semibold text-gray-600 mb-2" data-translate="no-available-cars">Aucune voiture disponible</h3>
+        <p class="text-[2rem] lg:text-sm text-gray-500" data-translate="no-available-message">Aucune voiture disponible immédiatement pour le moment.</p>
+      </div>
+    </div>
+  </main>
+  
+<footer class="bg-gray-200 mt-10 px-6 py-8 lg:py-4 text-gray-600">
+  <div class="flex flex-col lg:flex-row lg:justify-between items-center lg:items-center space-y-6 lg:space-y-0">
+    <div class="font-bold text-gray-800"><a href="/">
+      <img src="images/logo.png" alt="Logo" class="h-20 lg:h-16 mx-auto"></a>
+    </div>
+    <div class="flex flex-col lg:flex-row gap-6 lg:gap-2 text-blue-600 font-semibold text-center">
+      <a href="/contact" class="hover:underline text-[2.5rem] lg:text-sm" data-translate="contact">Contact</a>
+
+      <a href="https://maps.app.goo.gl/QunQmeik6mh7fxY19" class="hover:underline text-[2.5rem] lg:text-sm" data-translate="location">Emplacement</a>
+      <a href="/admin" class="hover:underline text-[2.5rem] lg:text-sm" data-translate="admin">admin</a>
+    </div>
+  </div>
+    <div class="flex justify-center gap-6 mt-6 lg:mt-4">
+    <a href="https://www.facebook.com/people/Samy-Auto-Kouba/61556110056090/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 transition-colors">
+      <svg class="w-12 h-12 lg:w-6 lg:h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    </a>
+    <a href="https://www.instagram.com/samy_auto_dz/" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:text-pink-800 transition-colors">
+      <svg class="w-12 h-12 lg:w-6 lg:h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+    </a>
+    <a href="https://www.tiktok.com/@samyautodz" target="_blank" rel="noopener noreferrer" class="text-black hover:text-gray-700 transition-colors">
+      <svg class="w-12 h-12 lg:w-6 lg:h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-.88-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+      </svg>
+    </a>
+  </div>
+  <p class="text-center mt-6 lg:mt-3 text-gray-500 text-[2rem] lg:text-sm" data-translate="copyright">© 2025 Samy Auto. Tous droits réservés.</p>
+</footer>
+
+</body>
+</html>

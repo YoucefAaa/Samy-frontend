@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/cars-sur-commande", "destination": "/cars-sur-commande.html" },
+    { "source": "/cars-available", "destination": "/cars-available.html" }
+  ]
+}
