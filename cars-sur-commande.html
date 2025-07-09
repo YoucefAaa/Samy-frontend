@@ -2,7 +2,7 @@
 <html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <title data-translate="sur-commande-title">Voitures Sur Commande</title>
+  <title data-translate="sur-commande-title">Samy Auto - Voitures Sur Commande</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="js/language.js"></script>
   <script src="js/renderSurCommandeCars.js"></script>
@@ -14,21 +14,18 @@
 <body class="bg-gray-100 min-h-screen flex flex-col">
   
 <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
-  <!-- Back Button -->
-  <a href="/" class="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
+  <a href="/" class="absolute left-6 flex items-center text-gray-600 hover:text-gray-800 transition-colors">
     <svg class="w-8 h-8 lg:w-6 lg:h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
     </svg>
     <span class="text-[2.5rem] lg:text-lg font-medium" data-translate="back">Retour</span>
   </a>
 
-  <!-- Logo -->
   <a href="/" class="flex-1 flex justify-center">
     <img src="images/logo.png" alt="Logo" class="h-40 lg:h-[3rem]">
   </a>
 
-  <!-- Language Toggle -->
-  <button id="language-toggle" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-10 py-5 lg:px-4 lg:py-2 rounded-full text-[2rem] lg:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 ease-in-out flex items-center gap-2">
+  <button id="language-toggle" class="absolute right-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-10 py-5 lg:px-4 lg:py-2 rounded-full text-[2rem] lg:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 ease-in-out flex items-center gap-2">
     <span id="next-lang" class="tracking-wide">AR</span>
   </button>
 </header>
