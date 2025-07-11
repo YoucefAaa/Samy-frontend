@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="carousel-container relative overflow-hidden rounded-xl">
               <div class="carousel-track flex transition-transform duration-500 ease-in-out" id="carousel-track">
                 ${carImages.map((img, index) => `
-                  <img src="$https://samy-auto.onrender.com{img}" alt="${car.title}" class="carousel-slide w-full h-auto lg:h-96 object-cover flex-shrink-0">
+                  <img src="https://samy-auto.onrender.com${img}" alt="${car.title}" class="carousel-slide w-full h-auto lg:h-96 object-cover flex-shrink-0">
                 `).join('')}
               </div>
             </div>
