@@ -99,7 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Fallback image if missing
-    const imageUrl = car.images.length > 0 ? car.images[0] : 'images/default.jpg';
+const imageUrl = car.images.length > 0 
+  ? `https://samy-auto.onrender.com/media/${car.images[0]}` 
+  : 'images/default.jpg';
 
     // Add availability badge
     const availabilityBadge = createAvailabilityBadge(car.basic_details?.Availability);
