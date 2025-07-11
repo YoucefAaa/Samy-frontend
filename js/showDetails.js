@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to fetch random cars
   async function fetchRandomCars(currentCarId) {
     try {
-      const response = await fetch('https://smay.onrender.com/api/cars/');
+      const response = await fetch('https://samy-auto.onrender.com/api/cars/');
       if (!response.ok) throw new Error('Failed to fetch cars');
       const allCars = await response.json();
       
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Main fetch for car details
   Promise.all([
-    fetch(`https://smay.onrender.com/api/cars/${carId}/`),
+    fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`),
     fetchRandomCars(carId)
   ])
     .then(async ([carResponse, randomCars]) => {

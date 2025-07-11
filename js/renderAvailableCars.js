@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hideNoResults();
     
     // Fetch cars with 'Disponible' filter
-    fetch('https://smay.onrender.com/api/cars/?availability=Disponible')
+    fetch('https://samy-auto.onrender.com/api/cars/?availability=Disponible')
       .then(res => res.json())
       .then(cars => {
         renderCars(cars);
