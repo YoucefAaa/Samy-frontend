@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="carousel-container relative overflow-hidden rounded-xl">
               <div class="carousel-track flex transition-transform duration-500 ease-in-out" id="carousel-track">
                 ${carImages.map((img, index) => `
-                  <img src="${img}" alt="${car.title}" class="carousel-slide w-full h-auto lg:h-96 object-cover flex-shrink-0">
+                  <img src="$https://samy-auto.onrender.com{img}" alt="${car.title}" class="carousel-slide w-full h-auto lg:h-96 object-cover flex-shrink-0">
                 `).join('')}
               </div>
             </div>
@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 return `
                   <div class="bg-white rounded-2xl shadow p-6 hover:shadow-2xl transition duration-300">
-                    <img src="${randomCarImage}" alt="${randomCar.title}" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
+                    <img src="https://samy-auto.onrender.com${randomCarImage}" alt="${randomCar.title}" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
                     <h3 class="text-[4.2rem] lg:text-2xl font-bold mb-4 text-center">${randomCar.title_ar && isRTL ? randomCar.title_ar : randomCar.title}</h3>
                     <div class="flex flex-wrap gap-2 mb-[4.2rem] lg:mb-[2.4rem]">
                       ${randomCarTags.map(tag => `<span class="bg-blue-100 text-blue-700 text-[2.1rem] lg:text-sm px-6 lg:px-3 py-2 lg:py-2 rounded-md">${tag}</span>`).join('')}

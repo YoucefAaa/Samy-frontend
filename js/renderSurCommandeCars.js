@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fallback image if missing
 const imageUrl = car.images.length > 0 
-  ? `https://samy-auto.onrender.com/media/${car.images[0]}` 
+  ? `https://samy-auto.onrender.com${car.images[0]}` 
   : 'images/default.jpg';
 
     // Add availability badge (should be "sur commande" for all cars on this page)
