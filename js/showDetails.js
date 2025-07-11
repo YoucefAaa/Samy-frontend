@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Translate Basic Details with both key and value translation
       const basicDetails = {};
       Object.entries(car.basic_details || {}).forEach(([key, val]) => {
-        if (val && val !== "Not Available") {
+        if (val && val !== "Pas Disponible") {
           const translatedKey = translateKey(key);
           const translatedValue = translateValue(val);
           basicDetails[translatedKey] = translatedValue;
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Translate Technical Specs with both key and value translation
       const technicalSpecs = {};
       Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
-        if (val && val !== "Not Available") {
+        if (val && val !== "Pas Disponible") {
           const translatedKey = translateKey(key);
           const translatedValue = translateValue(val);
           technicalSpecs[translatedKey] = translatedValue;
