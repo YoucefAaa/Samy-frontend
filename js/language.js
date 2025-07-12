@@ -1,8 +1,6 @@
 const translations = {
   fr: {
-    'page-title': 'Voitures',
-    'details-title': 'Détails de Voiture',
-    'sur-commande-title': 'Voitures Sur Commande',
+    
     'order-info-title': 'Information sur les commandes',
     'order-info-text': 'Ces voitures sont disponibles sur commande. Contactez-nous pour plus d\'informations',
     'no-order-cars': 'Aucune voiture sur commande',
@@ -120,9 +118,7 @@ const translations = {
     'Not Available': 'Pas Disponible'
   },
   ar: {
-    'page-title': 'السيارات',
-    'details-title': 'تفاصيل السيارة',
-    'sur-commande-title': 'سيارات على الطلب',
+
     'order-info-title': 'معلومات حول الطلبات',
     'order-info-text': 'هذه السيارات متوفرة على الطلب. اتصل بنا للحصول على مزيد من المعلومات.',
     'no-order-cars': 'لا توجد سيارات على الطلب',
