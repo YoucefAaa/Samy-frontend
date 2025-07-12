@@ -2,14 +2,46 @@
 <html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <title data-translate="page-title">Samy Auto - Contact</title>
+  <title>Samy Auto - Contact</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="js/language.js"></script>
   <script src="js/renderCards.js"></script>
   <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
   
-<meta name="description" content="Samy Auto - Concessionnaire automobile en Algérie">
-<meta name="keywords" content="voiture, automobile, Algérie, occasion, neuf">
+  <meta name="description" content="Samy Auto - Concessionnaire automobile en Algérie">
+  <meta name="keywords" content="voiture, automobile, Algérie, occasion, neuf">
+  
+  <style>
+    /* Force phone numbers to display left-to-right with Western numerals */
+    .phone-number {
+      direction: ltr !important;
+      unicode-bidi: bidi-override !important;
+      text-align: left !important;
+      font-variant-numeric: tabular-nums;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    /* Ensure the phone number container maintains LTR */
+    .phone-container {
+      direction: ltr;
+      text-align: left;
+    }
+    
+    /* Fix button alignment for RTL */
+    [dir="rtl"] .phone-row {
+      direction: rtl;
+    }
+    
+    [dir="rtl"] .phone-container {
+      direction: ltr;
+      text-align: left;
+    }
+    
+    /* Ensure buttons maintain proper order in RTL */
+    [dir="rtl"] .button-group {
+      direction: rtl;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
   
@@ -17,14 +49,7 @@
   <a href="/">
     <img src="images/logo.png" alt="Logo" class="h-40 lg:h-[3rem]">
   </a>
-
-
-  
-
-
-
 </header>
-
 
   <!-- Contact Page Body -->
   <main class="flex-1 w-full px-6 py-8">
@@ -45,7 +70,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
           </svg>
-          Localisation
+          <span data-translate="location">Localisation</span>
         </button>
       </div>
       
@@ -63,59 +88,59 @@
       
       <!-- Phone Numbers Section -->
       <div>
-        <h3 class="text-[2.8rem] lg:text-lg font-bold mb-4 text-center lg:text-left">Appelez-nous:</h3>
+        <h3 class="text-[2.8rem] lg:text-lg font-bold mb-4 text-center lg:text-left" data-translate="call_us">Appelez-nous:</h3>
         <div class="space-y-3">
-          <div class="flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
-            <div>
-              <p class="text-gray-800 font-medium text-[2.5rem] lg:text-base">0563 05 35 87</p>
+          <div class="phone-row flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
+            <div class="phone-container">
+              <p class="phone-number text-gray-800 font-medium text-[2.5rem] lg:text-base">0563 05 35 87</p>
             </div>
-            <div class="flex gap-2">
-              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213563053587')">
+            <div class="button-group flex gap-2">
+              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213563053587')" data-translate="call">
                 Appeler
               </button>
-              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213563053587')">
+              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213563053587')" data-translate="copy">
                 Copier
               </button>
             </div>
           </div>
           
-          <div class="flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
-            <div>
-              <p class="text-gray-800 font-medium text-[2.5rem] lg:text-base">0563 05 35 88</p>
+          <div class="phone-row flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
+            <div class="phone-container">
+              <p class="phone-number text-gray-800 font-medium text-[2.5rem] lg:text-base">0563 05 35 88</p>
             </div>
-            <div class="flex gap-2">
-              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213563053588')">
+            <div class="button-group flex gap-2">
+              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213563053588')" data-translate="call">
                 Appeler
               </button>
-              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213563053588')">
+              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213563053588')" data-translate="copy">
                 Copier
               </button>
             </div>
           </div>
           
-          <div class="flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
-            <div>
-              <p class="text-gray-800 font-medium text-[2.5rem] lg:text-base">0554 96 06 69</p>
+          <div class="phone-row flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
+            <div class="phone-container">
+              <p class="phone-number text-gray-800 font-medium text-[2.5rem] lg:text-base">0554 96 06 69</p>
             </div>
-            <div class="flex gap-2">
-              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213554960669')">
+            <div class="button-group flex gap-2">
+              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213554960669')" data-translate="call">
                 Appeler
               </button>
-              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213554960669')">
+              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213554960669')" data-translate="copy">
                 Copier
               </button>
             </div>
           </div>
           
-          <div class="flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
-            <div>
-              <p class="text-gray-800 font-medium text-[2.5rem] lg:text-base">0770 60 50 40</p>
+          <div class="phone-row flex items-center justify-between p-6 lg:p-3 bg-gray-50 rounded-lg">
+            <div class="phone-container">
+              <p class="phone-number text-gray-800 font-medium text-[2.5rem] lg:text-base">0770 60 50 40</p>
             </div>
-            <div class="flex gap-2">
-              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213770605040')">
+            <div class="button-group flex gap-2">
+              <button class="call-btn bg-green-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-green-700 transition" onclick="window.open('tel:+213770605040')" data-translate="call">
                 Appeler
               </button>
-              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213770605040')">
+              <button class="copy-btn bg-gray-600 text-white px-6 py-3 lg:px-3 lg:py-1 rounded text-[2rem] lg:text-sm hover:bg-gray-700 transition" onclick="copyToClipboard(this, '+213770605040')" data-translate="copy">
                 Copier
               </button>
             </div>
@@ -133,10 +158,9 @@
       </a>
     </div>
     <div class="flex flex-col lg:flex-row gap-6 lg:gap-2 text-blue-600 font-semibold text-center">
-
       <a href="/contact" class="hover:underline text-[2.5rem] lg:text-sm" data-translate="contact">Contact</a>
       <a href="https://maps.app.goo.gl/QunQmeik6mh7fxY19" class="hover:underline text-[2.5rem] lg:text-sm" data-translate="location">Emplacement</a>
-            <a href="https://smay.onrender.com/admin" target="_blank" class="hover:underline text-[2.5rem] lg:text-sm" data-translate="admin">admin</a>
+      <a href="https://samy-auto.onrender.com/admin" target="_blank" class="hover:underline text-[2.5rem] lg:text-sm" data-translate="admin">admin</a>
     </div>
   </div>
   
