@@ -314,13 +314,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           <!-- Back Button -->
           <div class="text-center">
-            <a href="index.html" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-[2.5rem] lg:text-base">
-              <svg class="w-8 h-8 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M14 5l-7 7 7 7' : 'M10 19l-7-7m0 0l7-7m-7 7h18'}"></path>
-              </svg>
-              ${window.getTranslation ? window.getTranslation('back-to-list') : 'Retour à la liste'}
-            </a>
-          </div>
+  <a href="#" onclick="history.back(); return false;" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-[2.5rem] lg:text-base">
+    <svg class="w-8 h-8 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M14 5l-7 7 7 7' : 'M10 19l-7-7m0 0l7-7m-7 7h18'}"></path>
+    </svg>
+    ${window.getTranslation ? window.getTranslation('back-to-list') : 'Retour à la liste'}
+  </a>
+</div>
         </div>
       `;
 
