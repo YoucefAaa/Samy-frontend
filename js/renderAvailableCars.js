@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Pagination variables
+  let currentPage = 1;
+  let allCars = [];
+  const CARS_PER_PAGE = 1;
+
   // Initialize the page
   setTimeout(() => {
     loadAvailableCars();
@@ -12,7 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch('https://samy-auto.onrender.com/api/cars/?availability=Disponible')
       .then(res => res.json())
       .then(cars => {
-        renderCars(cars);
+        allCars = cars; // Store all cars
+        currentPage = 1; // Reset to first page
+        renderCars(true); // Pass true to indicate initial load
       })
       .catch(error => {
         console.error('Error loading available cars:', error);
@@ -23,22 +30,33 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  function renderCars(cars) {
+  function renderCars(isInitialLoad = false) {
     const container = document.getElementById('card-container');
-    container.innerHTML = ''; // Clear existing cards
+    
+    if (isInitialLoad) {
+      container.innerHTML = ''; // Clear only on initial load
+    }
 
-    if (cars.length === 0) {
+    if (allCars.length === 0) {
       showNoResults();
       return;
     }
 
     hideNoResults();
     
-    // Render cars
-    cars.forEach(car => {
+    // Calculate which cars to show
+    const startIndex = (currentPage - 1) * CARS_PER_PAGE;
+    const endIndex = startIndex + CARS_PER_PAGE;
+    const carsToShow = allCars.slice(startIndex, endIndex);
+    
+    // Render new cars
+    carsToShow.forEach(car => {
       const card = createCarCard(car);
       container.appendChild(card);
     });
+    
+    // Handle Load More button
+    updateLoadMoreButton();
   }
 
   function createCarCard(car) {
@@ -61,16 +79,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Fallback image if missing
-const imageUrl = car.images.length > 0 
-  ? `https://samy-auto.onrender.com${car.images[0]}` 
-  : 'images/default.jpg';
+    const imageUrl = car.images.length > 0 
+      ? `https://samy-auto.onrender.com${car.images[0]}` 
+      : 'images/default.jpg';
 
     // Add availability badge (should be "Disponible" for all cars on this page)
     const availabilityBadge = createAvailabilityBadge(car.basic_details?.Availability);
 
     card.innerHTML = `
       <div class="relative">
-        <img src="${imageUrl}" alt="${car.title}" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
+        <img src="${imageUrl}" alt="${car.title}" loading="lazy" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
         ${availabilityBadge}
       </div>
       <h3 class="text-[4.2rem] lg:text-2xl font-bold mb-4 text-center">${car.title}</h3>
@@ -107,6 +125,38 @@ const imageUrl = car.images.length > 0
         ${badgeText}
       </div>
     `;
+  }
+
+  function updateLoadMoreButton() {
+    const totalShown = currentPage * CARS_PER_PAGE;
+    const hasMore = totalShown < allCars.length;
+    
+    let loadMoreBtn = document.getElementById('load-more-btn');
+    
+    if (hasMore) {
+      if (!loadMoreBtn) {
+        // Create load more button if it doesn't exist
+        loadMoreBtn = document.createElement('div');
+        loadMoreBtn.id = 'load-more-btn';
+        loadMoreBtn.className = 'text-center mt-8';
+        loadMoreBtn.innerHTML = `
+          <button onclick="loadMoreCars()" class="bg-blue-600 text-white px-8 py-3 rounded-full text-[2rem] lg:text-lg font-semibold hover:bg-blue-700 transition">
+            ${window.getTranslation ? window.getTranslation('load-more') || 'Charger Plus' : 'Charger Plus'}
+          </button>
+        `;
+        document.getElementById('card-container').parentNode.appendChild(loadMoreBtn);
+      }
+      loadMoreBtn.style.display = 'block';
+    } else {
+      if (loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+      }
+    }
+  }
+
+  function loadMoreCars() {
+    currentPage++;
+    renderCars(false); // false means don't clear existing cards
   }
 
   function showLoading(show) {
@@ -147,4 +197,7 @@ const imageUrl = car.images.length > 0
       </div>
     `;
   }
+
+  // Make loadMoreCars globally accessible
+  window.loadMoreCars = loadMoreCars;
 });
