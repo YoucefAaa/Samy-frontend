@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Pagination variables
   let currentPage = 1;
   let allCars = [];
-  const CARS_PER_PAGE = 10;
+  const CARS_PER_PAGE = 1;
   const STORAGE_KEY = 'carListingState';
 
   // Initialize the page
