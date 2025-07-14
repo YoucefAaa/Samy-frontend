@@ -175,13 +175,13 @@ document.addEventListener("DOMContentLoaded", () => {
             
             <!-- Carousel Controls (only show if more than 1 image) -->
             ${carImages.length > 1 ? `
-              <button id="prev-btn" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition">
-                <svg class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button id="prev-btn" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition">
+                <svg class="w-6 h-6 md:w-16 md:h-16 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'}"></path>
                 </svg>
               </button>
-              <button id="next-btn" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition">
-                <svg class="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button id="next-btn" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition">
+                <svg class="w-6 h-6 md:w-16 md:h-16 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'}"></path>
                 </svg>
               </button>
