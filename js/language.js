@@ -8,6 +8,7 @@ const translations = {
     'order-description': 'Voitures disponibles sur commande',
     'about': 'À propos',
     'contact': 'Contact',
+    'load-more': 'Charger Plus',
     
     'location': 'Emplacement',
     'Sur-Commande': 'Sur Commande',
@@ -128,6 +129,7 @@ const translations = {
     'contact': 'معلومات الاتصال',
     'location': 'الموقع',
     'back': 'عودة',
+    'load-more': 'تحميل المزيد',
     'copyright': '© 2025 سامي أوتو. جميع الحقوق محفوظة.',
     'welcome-subtitle': 'اكتشف مجموعتنا من السيارات المتوفرة فورًا أو على الطلب',
     'view-cars': 'عرض السيارات',

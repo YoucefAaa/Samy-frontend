@@ -3,11 +3,51 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentPage = 1;
   let allCars = [];
   const CARS_PER_PAGE = 10;
+  const STORAGE_KEY = 'surCommandeCarListingState';
 
   // Initialize the page
   setTimeout(() => {
-    loadSurCommandeCars();
+    loadPageState();
   }, 100);
+
+  function loadPageState() {
+    // Try to restore state from sessionStorage
+    const savedState = sessionStorage.getItem(STORAGE_KEY);
+    
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        allCars = state.allCars || [];
+        currentPage = state.currentPage || 1;
+        
+        // If we have saved cars, render them instead of fetching
+        if (allCars.length > 0) {
+          renderAllPagesUpToCurrent();
+          return;
+        }
+      } catch (error) {
+        console.error('Error parsing saved state:', error);
+        // If parsing fails, continue with normal loading
+      }
+    }
+    
+    // No saved state or empty cars, load fresh data
+    loadSurCommandeCars();
+  }
+
+  function savePageState() {
+    const state = {
+      allCars: allCars,
+      currentPage: currentPage,
+      timestamp: Date.now()
+    };
+    
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.error('Error saving state to sessionStorage:', error);
+    }
+  }
 
   function loadSurCommandeCars() {
     showLoading(true);
@@ -20,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         allCars = cars; // Store all cars
         currentPage = 1; // Reset to first page
         renderCars(true); // Pass true to indicate initial load
+        savePageState(); // Save state after loading
       })
       .catch(error => {
         console.error('Error loading sur commande cars:', error);
@@ -28,6 +69,30 @@ document.addEventListener("DOMContentLoaded", () => {
       .finally(() => {
         showLoading(false);
       });
+  }
+
+  function renderAllPagesUpToCurrent() {
+    const container = document.getElementById('card-container');
+    container.innerHTML = ''; // Clear container
+
+    if (allCars.length === 0) {
+      showNoResults();
+      return;
+    }
+
+    hideNoResults();
+    
+    // Render all cars from page 1 to current page
+    const totalCarsToShow = currentPage * CARS_PER_PAGE;
+    const carsToShow = allCars.slice(0, totalCarsToShow);
+    
+    carsToShow.forEach(car => {
+      const card = createCarCard(car);
+      container.appendChild(card);
+    });
+    
+    // Handle Load More button
+    updateLoadMoreButton();
   }
 
   function renderCars(isInitialLoad = false) {
@@ -44,18 +109,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     hideNoResults();
     
-    // Calculate which cars to show
     const startIndex = (currentPage - 1) * CARS_PER_PAGE;
     const endIndex = startIndex + CARS_PER_PAGE;
     const carsToShow = allCars.slice(startIndex, endIndex);
     
-    // Render new cars
+    
     carsToShow.forEach(car => {
       const card = createCarCard(car);
       container.appendChild(card);
     });
     
-    // Handle Load More button
+    
     updateLoadMoreButton();
   }
 
@@ -63,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const card = document.createElement('div');
     card.className = 'bg-white rounded-2xl shadow p-6 hover:shadow-2xl transition duration-300';
 
-    // Extract display tags
+    
     const displayTags = [
       car.basic_details?.Année,
       car.basic_details?.Etat,
@@ -72,18 +136,18 @@ document.addEventListener("DOMContentLoaded", () => {
       car.technical_specs?.Power
     ].filter(Boolean);
 
-    // Translate tags (from car.tags array)
+    
     const translatedTags = car.tags.map(tag => {
       const tagKey = tag.toLowerCase();
       return window.getTranslation ? window.getTranslation(tagKey) || tag : tag;
     });
 
-    // Fallback image if missing
+    
     const imageUrl = car.images.length > 0 
       ? `https://samy-auto.onrender.com${car.images[0]}` 
       : 'images/default.jpg';
 
-    // Add availability badge (should be "sur commande" for all cars on this page)
+    
     const availabilityBadge = createAvailabilityBadge(car.basic_details?.Availability);
 
     card.innerHTML = `
@@ -99,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${car.price} ${window.getCurrentLanguage && window.getCurrentLanguage() === 'ar' ? 'دج' : 'DA'}
       </p>
       <div class="flex justify-center">
-        <a href="details.html?id=${car.id}" class="bg-blue-600 text-white text-center py-3 px-80 lg:px-8 rounded-full text-[3rem] lg:text-lg font-semibold hover:bg-blue-700 transition">
+        <a href="details.html?id=${car.id}" class="bg-blue-600 text-white text-center py-3 px-80 lg:px-8 rounded-full text-[3rem] lg:text-lg font-semibold hover:bg-blue-700 transition" onclick="savePageState()">
           ${window.getTranslation ? window.getTranslation('view-more') : 'Voir Plus'}
         </a>
       </div>
@@ -135,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (hasMore) {
       if (!loadMoreBtn) {
-        // Create load more button if it doesn't exist
+        
         loadMoreBtn = document.createElement('div');
         loadMoreBtn.id = 'load-more-btn';
         loadMoreBtn.className = 'text-center mt-8';
@@ -156,7 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadMoreCars() {
     currentPage++;
-    renderCars(false); // false means don't clear existing cards
+    renderCars(false); 
+    savePageState(); 
   }
 
   function showLoading(show) {
@@ -198,6 +263,12 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // Make loadMoreCars globally accessible
+  
+  window.addEventListener('beforeunload', () => {
+    
+  });
+
+  // Make functions globally accessible
   window.loadMoreCars = loadMoreCars;
+  window.savePageState = savePageState;
 });
