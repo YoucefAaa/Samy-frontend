@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
       'Etat': 'etat',
       'Année': 'annee', 
       'Finition': 'finition',
-      'Couleurs': 'couleurs',
+      'Couleurs': 'couleur',
       'Energie': 'energie',
       'Motor': 'motor',
       'Power': 'power',
@@ -160,6 +160,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const description = currentLang === 'ar'
         ? (car.description_ar || car.description)
         : car.description;
+      let couleur = currentLang === 'ar'
+        ? (car.basic_details?.Couleurs_ar || car.basic_details?.Couleurs_fr)
+        : car.basic_details?.Couleurs_fr;
+
+      if (couleur) {
+        couleur = translateValue(couleur, 'color');
+      }
+
+
 
       container.innerHTML = `
         <div class="max-w-4xl mx-auto" ${isRTL ? 'dir="rtl"' : ''}>

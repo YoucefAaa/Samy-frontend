@@ -137,10 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ].filter(Boolean);
 
     
-    const translatedTags = car.tags.map(tag => {
-      const tagKey = tag.toLowerCase();
-      return window.getTranslation ? window.getTranslation(tagKey) || tag : tag;
-    });
+    const language = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
+    const userTags = language === 'ar' ? car.tags_ar : car.tags_fr;
+    const userTagsClean = (userTags && userTags.length > 0) ? userTags : [];
+
 
     
     const imageUrl = car.images.length > 0 
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <h3 class="text-[4.2rem] lg:text-2xl font-bold mb-4 text-center">${car.title}</h3>
       <div class="flex flex-wrap gap-2 mb-[4.2rem] lg:mb-[2.4rem]">
-        ${translatedTags.map(tag => `<span class="bg-blue-100 text-blue-700 text-[2.1rem] lg:text-sm px-6 lg:px-3 py-2 lg:py-2 rounded-md">${tag}</span>`).join('')}
+        ${userTagsClean.map(tag => `<span class="bg-blue-100 text-blue-700 text-[2.1rem] lg:text-sm px-6 lg:px-3 py-2 lg:py-2 rounded-md">${tag}</span>`).join('')}
       </div>
       <p class="text-red-600 text-[4.2rem] lg:text-2xl font-semibold mb-4 text-center">
         ${car.price} ${window.getCurrentLanguage && window.getCurrentLanguage() === 'ar' ? 'دج' : 'DA'}
