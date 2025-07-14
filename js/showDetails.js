@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Try with common field mappings
     const fieldMappings = {
       'Etat': 'etat',
-      'Année': 'annee', 
+      'Annee': 'annee', 
       'Finition': 'finition',
       'Couleurs': 'couleur',
       'Couleur': 'couleur',
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Display tags from both basic + technical with proper translation
       const displayTags = [
-        car.basic_details?.Année,
+        car.basic_details?.Annee,
         car.basic_details?.Etat,
         car.technical_specs?.Energie,
         car.technical_specs?.Motor,
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               ${randomCars.map(randomCar => {
                 const randomCarDisplayTags = [
-                  randomCar.basic_details?.Année,
+                  randomCar.basic_details?.Annee,
                   randomCar.basic_details?.Etat,
                   randomCar.technical_specs?.Energie,
                   randomCar.technical_specs?.Motor,

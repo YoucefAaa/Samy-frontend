@@ -76,7 +76,6 @@ const translations = {
     'cylindre': 'Cylindres',
     'boite': 'Boîte de vitesse',
     'climatisation-automatique': 'Climatisation Automatique',
-    'toit-ouvrant': 'Toit Ouvrant',
     'siege-chauffants': 'Siege Chauffants',
     'siege-conducteur-electrique': 'Siege Conducteur electrique',
     'siege-passager-electrique': 'Siege Passager electrique',
@@ -154,7 +153,6 @@ const translations = {
     'assistance-au-freinage': 'مساعدة الفرامل',
     'controle-de-traction': 'نظام التحكم في الجر',
     'controle-de-stabilite': 'نظام التحكم في الثبات',
-    'toit-ouvrant': 'فتحة سقف',
     'disponible': 'متاح',
     'sur-command': 'على الطلب',
     'voitures-sur-commande': 'سيارات على الطلب',
@@ -249,7 +247,7 @@ const detailTranslations = {
     'cylindre': 'Cylindres',
     'boite': 'Boîte de vitesse',
     'climatisation-automatique': 'Climatisation Automatique',
-    'toit-ouvrant': 'Toit Ouvrant',
+
     'siege-conducteur-electrique': 'Siege Conducteur electrique',
     'siege-passager-electrique': 'Siege Passager electrique',
     'stationnement-automatique': 'Stationnement Automatique',
@@ -315,7 +313,7 @@ const detailTranslations = {
     'cylindre': 'الأسطوانات',
     'boite': 'علبة السرعات',
     'climatisation-automatique': 'تكييف هواء أوتوماتيكي',
-    'toit-ouvrant': 'فتحة سقف',
+
     'siege-conducteur-electrique': 'مقعد السائق الكهربائي',
     'siege-passager-electrique': 'مقعد الراكب الكهربائي',
     'stationnement-automatique': 'ركن أوتوماتيكي',
@@ -390,12 +388,9 @@ function translateValue(value, context = null) {
   }
   
   const commonTranslations = {
-    'neuf': currentLanguage === 'ar' ? 'جديد' : 'Neuf',
-    'occasion': currentLanguage === 'ar' ? 'مستعمل' : 'Occasion',
     'manuelle': currentLanguage === 'ar' ? 'يدوي' : 'Manuelle',
     'automatique': currentLanguage === 'ar' ? 'أوتوماتيكي' : 'Automatique',
     'cvt': 'CVT',
-    'blanc': currentLanguage === 'ar' ? 'أبيض' : 'Blanc',
     'en': currentLanguage === 'ar' ? 'بنزين' : 'Essence',
     'diesel': currentLanguage === 'ar' ? 'ديزل' : 'Diesel',
     'oui': currentLanguage === 'ar' ? 'نعم' : 'Oui',
