@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       'Année': 'annee', 
       'Finition': 'finition',
       'Couleurs': 'couleur',
+      'Couleur': 'couleur',
       'Energie': 'energie',
       'Motor': 'motor',
       'Power': 'power',
@@ -136,15 +137,38 @@ document.addEventListener("DOMContentLoaded", () => {
       // Translate those tags properly
       const translatedTags = displayTags.map(tag => translateValue(tag));
 
+      // Handle color selection based on language
+      let couleur = null;
+      if (currentLang === 'ar') {
+        couleur = car.basic_details?.Couleurs_ar || car.basic_details?.Couleurs_fr;
+      } else {
+        couleur = car.basic_details?.Couleurs_fr || car.basic_details?.Couleurs_ar;
+      }
+
+      if (couleur) {
+        couleur = translateValue(couleur, 'color');
+      }
+
       // Translate Basic Details with both key and value translation
       const basicDetails = {};
       Object.entries(car.basic_details || {}).forEach(([key, val]) => {
+        // Skip the color fields that we don't want to show directly
+        if (key === 'Couleurs_ar' || key === 'Couleurs_fr') {
+          return;
+        }
+        
         if (val && val !== "Pas Disponible") {
           const translatedKey = translateKey(key);
           const translatedValue = translateValue(val);
           basicDetails[translatedKey] = translatedValue;
         }
       });
+
+      // Add the color to basic details if it exists
+      if (couleur) {
+        const colorKey = translateKey('Couleur');
+        basicDetails[colorKey] = couleur;
+      }
 
       // Translate Technical Specs with both key and value translation
       const technicalSpecs = {};
@@ -160,15 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const description = currentLang === 'ar'
         ? (car.description_ar || car.description)
         : car.description;
-      let couleur = currentLang === 'ar'
-        ? (car.basic_details?.Couleurs_ar || car.basic_details?.Couleurs_fr)
-        : car.basic_details?.Couleurs_fr;
-
-      if (couleur) {
-        couleur = translateValue(couleur, 'color');
-      }
-
-
 
       container.innerHTML = `
         <div class="max-w-4xl mx-auto" ${isRTL ? 'dir="rtl"' : ''}>
@@ -440,5 +455,4 @@ function initializeCarousel(imageCount, isRTL = false) {
       updateCarousel();
     }, 3000);
   }
-  
 }
