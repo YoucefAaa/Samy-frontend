@@ -33,7 +33,6 @@ const translations = {
     'state': 'Etat',
     'year': 'Annee',
     'finish': 'Finition',
-    'colors': 'Couleurs',
     'motor': 'Motor',
     'gearbox': 'Boite',
     'economical': 'economique',
@@ -68,7 +67,6 @@ const translations = {
 
     'annee': 'Annee',
     'finition': 'Finition',
-    'couleurs': 'Couleurs',
     'cylindre': 'Cylindres',
     'boite': 'Boîte de vitesse',
     'available': 'Disponible',
@@ -100,7 +98,9 @@ const translations = {
         'carsh': 'Alerte Collision',
         'dead-angle': 'Detecteur d’Angles Mort',
         'autohold': 'Autohold',
-        'fatigue': 'Detecteur de Fatigue'
+        'fatigue': 'Detecteur de Fatigue',
+        'availability': 'Disponibilite',
+        'couleur': 'Couleur',
         
 
 
@@ -183,7 +183,6 @@ const translations = {
     'etat': 'الحالة',
     'annee': 'السنة',
     'finition': 'الموديل',
-    'couleurs': 'الألوان',
     'cylindre': 'الأسطوانات',
     'boite': 'علبة السرعات',
     'available': 'متاح',
@@ -215,7 +214,9 @@ const translations = {
         'carsh': 'تنبيه التصادم',
         'dead-angle': 'نظام مراقبة النقطة العمياء',
         'autohold': 'نظام التوقف المؤقت للصعود',
-        'fatigue': 'مستشعر التعب'
+        'fatigue': 'مستشعر التعب',
+        'availability': 'توفر السيارة',
+        'couleur': 'اللون',
 
 
 
@@ -227,7 +228,6 @@ const detailTranslations = {
     'etat': 'Etat',
     'annee': 'Annee',
     'finition': 'Finition',
-    'couleurs': 'Couleurs',
     'energie': 'Energie',
     'motor': 'Motor',
     'power': 'Puissance',
@@ -258,7 +258,6 @@ const detailTranslations = {
 
     'annee': 'Annee',
     'finition': 'Finition',
-    'couleurs': 'Couleurs',
     'motor': 'Moteur',
     'power': 'Puissance',
     'cylindre': 'Cylindres',
@@ -273,7 +272,6 @@ const detailTranslations = {
     'etat': 'الحالة',
     'annee': 'السنة',
     'finition': 'الموديل',
-    'couleurs': 'الألوان',
     'energie': 'الوقود',
     'motor': 'المحرك',
     'power': 'القوة',
@@ -310,7 +308,6 @@ const detailTranslations = {
     'etat': 'الحالة',
     'annee': 'السنة',
     'finition': 'الموديل',
-    'couleurs': 'الألوان',
     'motor': 'المحرك',
     'power': 'القوة',
     'cylindre': 'الأسطوانات',

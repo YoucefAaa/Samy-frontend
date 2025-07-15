@@ -119,6 +119,7 @@ function translateKey(key) {
     'Detecteur d’Angles Mort': 'dead-angle',
     'Autohold': 'autohold',
     'Detecteur de Fatigue': 'fatigue',
+    'Availability': 'availability',
 
 
 
