@@ -98,7 +98,13 @@ function translateKey(key) {
     'Siege Passager Electrique': 'siege-passager-electrique',
     'Siege Conducteur Electrique': 'siege-conducteur-electrique',
     'Siege Chauffants': 'siege-chauffants',
-    'siege-climatises': 'Siege Climatises'
+    'Siege Climatises': 'siege-climatises',
+    'Digital Cockpit': 'digital-cockpit',
+    'ecran Tactile': 'ecran-tactile',
+    'Entree et Demarrage sans Cle': 'sans-cle',
+    'Lumiere Ambiante': 'amb-light',
+    'La Malle electrique': 'la-malle-electrique',
+    'Retroviseurs Rabattables': 'ret-rab',
 
 
   };

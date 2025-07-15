@@ -72,7 +72,32 @@ const translations = {
     'cylindre': 'Cylindres',
     'boite': 'Boîte de vitesse',
     'available': 'Disponible',
-    'not-available': 'Pas Disponible'
+    'not-available': 'Pas Disponible',
+
+        'climatisation-automatique': 'Climatisation Automatique',
+        'toit-ouvrant': 'Toit ouvrant',
+        'siege-conducteur-electrique': 'siege Conducteur Electrique',
+        'siege-passager-electrique': 'Siege Passager Electrique',
+        'siege-climatises': 'Siege Climatises',
+        'digital-cockpit': 'Digital Cockpit',
+        'stationnement-automatique': 'Stationnement Automatique',
+        'radar-stationnement-avant': 'Radar Stationnement Avant',
+        'radar-stationnement-arriere': 'Radar Stationnement Arriere',
+        'assistance-au-freinage': 'Assistance Au Freinage',
+        'camera-de-recul': 'Camera de Recul',
+        'ecran-tactile': 'Ecran Tactile',
+        'airbags-supplementaires': 'Airbags Supplementaires',
+        'les-gants-en-alliage': 'Les Gants en Alliage',
+        'camera-de-360-degres': 'Camera 360 Degres',
+        'la-malle-electrique': 'La Malle electrique',
+        'sans-cle': 'Entree et Demarrage sans Cle',
+        'amb-light': 'Lumiere Ambiante',
+        'ret-rab': 'Retroviseurs Rabattables'
+        
+
+
+
+
   },
   ar: {
     'order-info-title': 'معلومات حول الطلبات',
@@ -93,6 +118,7 @@ const translations = {
     'voitures-disponibles': 'سيارات متوفرة',
     'available-description': 'سيارات جاهزة',
     'order-description': 'سيارات متوفرة على الطلب',
+    
     'pret': 'جاهزة ',
     'view-more': 'عرض المزيد',
     'car-not-found': 'السيارة غير موجودة',
@@ -153,7 +179,30 @@ const translations = {
     'cylindre': 'الأسطوانات',
     'boite': 'علبة السرعات',
     'available': 'متاح',
-    'not-available': 'غير متاح'
+    'not-available': 'غير متاح',
+
+        'climatisation-automatique': 'تكييف هواء أوتوماتيكي',
+        'toit-ouvrant': 'فتحة سقف',
+        'siege-conducteur-electrique': 'مقعد السائق كهربائي',
+        'siege-conducteur-electrique': 'مقعد السائق كهربائي',
+        'siege-climatises': 'مقاعد مكيفة',
+        'digital-cockpit': 'لوحة عدادات رقمية',
+        'stationnement-automatique': 'ركن أوتوماتيكي',
+        'radar-stationnement-avant': 'رادار ركن أمامي',
+        'radar-stationnement-arriere': 'رادار ركن خلفي',
+        'assistance-au-freinage': 'مساعدة الفرامل',
+        'camera-de-recul': 'كاميرا الرجوع للخلف',
+        'ecran-tactile': 'شاشة لمس',
+        'airbags-supplementaires': 'وسائد هوائية إضافية',
+        'les-gants-en-alliage': 'قفازات السبائك',
+        'camera-de-360-degres': 'كاميرا 360 درجة',
+        'la-malle-electrique': 'الصندوق الخلفي الكهربائي',
+        'sans-cle': 'دخول وتشغيل بدون مفتاح',
+        'amb-light': 'إضاءة محيطية',
+        'ret-rab': 'المرايا القابلة للطي',
+
+
+
   }
 };
 
@@ -173,16 +222,12 @@ const detailTranslations = {
     'view-cars': 'Voir les voitures',
     'radar-stationnement-avant': 'Radar stationnement avant',
     'radar-stationnement-arriere': 'Radar stationnement arriere',
-    'climatisation': 'Climatisation',
     'assistance-au-freinage': 'Assistance Au Freinage',
     'controle-de-traction': 'Contrôle de Traction',
     'controle-de-stabilite': 'Contrôle de Stabilite',
     'available-description': 'Voitures prêtes',
     'camera-540': 'Camera 540°',
-    'siege-passager-electrique': 'Siege Passager Electrique',
     'stationnement-automatique': 'Stationnement Automatique',
-    'siege-conducteur-electrique': 'siege Conducteur Electrique',
-    'toit-ouvrant': 'Toit ouvrant',
     'disponible': 'Disponible',
     'pret': 'Prêt à partir',
     'sur-command': 'Sur commande',
@@ -207,21 +252,9 @@ const detailTranslations = {
     'power': 'Puissance',
     'cylindre': 'Cylindres',
     'boite': 'Boîte de vitesse',
-    'climatisation-automatique': 'Climatisation Automatique',
 
-    'siege-conducteur-electrique': 'Siege Conducteur electrique',
-    'siege-passager-electrique': 'Siege Passager electrique',
-    'stationnement-automatique': 'Stationnement Automatique',
-    'radar-stationnement-avant': 'Radar Stationnement Avant',
-    'radar-stationnement-arriere': 'Radar Stationnement Arriere',
-    'assistance-au-freinage': 'Assistance Au Freinage',
-    'siege-climatises': 'Siege Climatises',
-    'camera-de-recul': 'Camera de Recul',
-    'ecran-tactile': 'ecran Tactile',
-    'airbags-supplementaires': 'Airbags Supplementaires',
-    'les-gants-en-alliage': 'Les Gants en Alliage',
-    'camera-de-360-degres': 'Camera 360 Degres',
-    'la-malle-electrique': 'La Malle electrique',
+
+    
     'available': 'Disponible',
     'not-available': 'Pas Disponible'
   },
@@ -240,27 +273,23 @@ const detailTranslations = {
     'view-cars': 'عرض السيارات',
     'radar-stationnement-avant': 'رادار ركن أمامي',
     'radar-stationnement-arriere': 'رادار ركن خلفي',
-    'climatisation': 'تكييف الهواء',
-    'toit-ouvrant': 'فتحة سقف',
     'assistance-au-freinage': 'مساعدة الفرامل',
     'controle-de-traction': 'نظام التحكم في الجر',
     'controle-de-stabilite': 'نظام التحكم في الثبات',
-    'siege-passager-electrique': 'مقعد الراكب كهربائي',
     'camera-540': 'كاميرا 540°',
     'stationnement-automatique': 'ركن أوتوماتيكي',
-    'siege-conducteur-electrique': 'مقعد السائق كهربائي',
 
     'disponible': 'متاح',
     'sur-command': 'على الطلب',
     'available-description': 'سيارات جاهزة',
     'voitures-sur-commande': 'سيارات على الطلب',
-    'climatisation-automatique': 'تكييف هواء أوتوماتيكي',
+
     'pret': 'جاهزة',
     'oui': 'نعم',
     'non': 'لا',
     'manuelle': 'يدوي',
     'automatique': 'أوتوماتيكي',
-    'toit-ouvrant': 'فتحة سقف',
+    
     'cvt': 'CVT',
     'blanc': 'أبيض',
     'neuf': 'جديد',
@@ -275,23 +304,9 @@ const detailTranslations = {
     'power': 'القوة',
     'cylindre': 'الأسطوانات',
     'boite': 'علبة السرعات',
-    'climatisation-automatique': 'تكييف هواء أوتوماتيكي',
 
-    'siege-conducteur-electrique': 'مقعد السائق الكهربائي',
-    'siege-passager-electrique': 'مقعد الراكب الكهربائي',
-    'stationnement-automatique': 'ركن أوتوماتيكي',
-    'radar-stationnement-avant': 'رادار ركن أمامي',
-    'radar-stationnement-arriere': 'رادار ركن خلفي',
-    'assistance-au-freinage': 'مساعدة الفرامل',
-    'siege-climatises': 'مقاعد مكيفة',
-    'camera-de-recul': 'كاميرا الرجوع للخلف',
-    'ecran-tactile': 'شاشة لمس',
-    'airbags-supplementaires': 'وسائد هوائية إضافية',
-    'les-gants-en-alliage': 'قفازات السبائك',
-    'camera-de-360-degres': 'كاميرا 360 درجة',
-    'la-malle-electrique': 'الصندوق الخلفي الكهربائي',
-    'available': 'متاح',
-    'not-available': 'غير متاح'
+
+    
   }
 };
 
