@@ -71,6 +71,8 @@ const translations = {
     'boite': 'Boîte de vitesse',
     'available': 'Disponible',
     'not-available': 'Pas Disponible',
+    'neuf': 'Neuf',
+    'occasion': 'Occasion',
 
         'climatisation-automatique': 'Climatisation Automatique',
         'toit-ouvrant': 'Toit ouvrant',
@@ -187,6 +189,8 @@ const translations = {
     'boite': 'علبة السرعات',
     'available': 'متاح',
     'not-available': 'غير متاح',
+    'neuf': 'جديد',
+    'occasion': 'مستعمل',
 
         'climatisation-automatique': 'تكييف هواء أوتوماتيكي',
         'toit-ouvrant': 'فتحة سقف',
