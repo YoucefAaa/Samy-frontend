@@ -11,79 +11,122 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Enhanced translation helper function
-  function translateValue(value, context = null) {
-    if (!value) return value;
-    
-    const currentLang = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
-    
-    // Handle exact matches first
-    if (window.getDetailTranslation) {
-      const detailTranslation = window.getDetailTranslation(value);
-      if (detailTranslation && detailTranslation !== value) {
-        return detailTranslation;
-      }
+  // In showDetails.js, replace the translateValue function with this:
+function translateValue(value, context = null) {
+  if (!value) return value;
+  
+  const currentLang = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
+  
+  // First try direct translation
+  if (window.getDetailTranslation) {
+    const detailTranslation = window.getDetailTranslation(value);
+    if (detailTranslation && detailTranslation !== value) {
+      return detailTranslation;
     }
-    
-    // Try general translation
-    if (window.getTranslation) {
-      const generalTranslation = window.getTranslation(value);
-      if (generalTranslation && generalTranslation !== value) {
-        return generalTranslation;
-      }
-      
-      // Try lowercase version
-      const lowerTranslation = window.getTranslation(value.toLowerCase());
-      if (lowerTranslation && lowerTranslation !== value.toLowerCase()) {
-        return lowerTranslation;
-      }
-    }
-    
-    // Fallback to translateValue function from language.js
-    if (window.translateValue) {
-      return window.translateValue(value, context);
-    }
-    
-    return value;
   }
+  
+  // Try general translation
+  if (window.getTranslation) {
+    // Try exact match
+    const generalTranslation = window.getTranslation(value);
+    if (generalTranslation && generalTranslation !== value) {
+      return generalTranslation;
+    }
+    
+    // Try lowercase version
+    const lowerValue = value.toLowerCase();
+    const lowerTranslation = window.getTranslation(lowerValue);
+    if (lowerTranslation && lowerTranslation !== lowerValue) {
+      return lowerTranslation;
+    }
+    
+    // Try with spaces replaced by hyphens
+    const hyphenValue = value.replace(/\s+/g, '-');
+    const hyphenTranslation = window.getTranslation(hyphenValue);
+    if (hyphenTranslation && hyphenTranslation !== hyphenValue) {
+      return hyphenTranslation;
+    }
+    
+    // Try with spaces replaced by hyphens and lowercase
+    const hyphenLowerValue = hyphenValue.toLowerCase();
+    const hyphenLowerTranslation = window.getTranslation(hyphenLowerValue);
+    if (hyphenLowerTranslation && hyphenLowerTranslation !== hyphenLowerValue) {
+      return hyphenLowerTranslation;
+    }
+  }
+  
+  // Fallback to translateValue function from language.js
+  if (window.translateValue) {
+    return window.translateValue(value, context);
+  }
+  
+  return value;
+}
 
-  // Enhanced key translation function
-  function translateKey(key) {
-    if (!key) return key;
-    
-    // Direct translation lookup
-    if (window.getDetailTranslation) {
-      const translated = window.getDetailTranslation(key);
-      if (translated && translated !== key) {
-        return translated;
-      }
+// In showDetails.js, replace the translateKey function with this:
+function translateKey(key) {
+  if (!key) return key;
+  
+  // Direct translation lookup
+  if (window.getDetailTranslation) {
+    const translated = window.getDetailTranslation(key);
+    if (translated && translated !== key) {
+      return translated;
     }
-    
-    // Try with common field mappings
-    const fieldMappings = {
-      'Etat': 'etat',
-      'Annee': 'annee', 
-      'Finition': 'finition',
-      'Couleurs': 'couleur',
-      'Couleur': 'couleur',
-      'Energie': 'energie',
-      'Motor': 'motor',
-      'Power': 'power',
-      'Cylindre': 'cylindre',
-      'Boite': 'boite',
-      'ABS': 'abs'
-    };
-    
-    const mappedKey = fieldMappings[key] || key;
-    if (window.getTranslation) {
-      const translated = window.getTranslation(mappedKey);
-      if (translated && translated !== mappedKey) {
-        return translated;
-      }
-    }
-    
-    return key;
   }
+  
+  // Try with common field mappings (enhanced version)
+  const fieldMappings = {
+    'Etat': 'etat',
+    'Annee': 'annee', 
+    'Finition': 'finition',
+    'Couleurs': 'couleur',
+    'Couleur': 'couleur',
+    'Energie': 'energie',
+    'Motor': 'motor',
+    'Power': 'power',
+    'Cylindre': 'cylindre',
+    'Boite': 'boite',
+    'ABS': 'abs',
+    'Climatisation': 'climatisation',
+    'Assistance Au Freinage': 'assistance-au-freinage',
+    'Contrôle de Traction': 'controle-de-traction',
+    'Contrôle de Stabilite': 'controle-de-stabilite',
+    'Toit ouvrant': 'toit-ouvrant',
+    'Stationnement Automatique': 'stationnement-automatique',
+    'Siege Passager Electrique': 'siege-passager-electrique',
+    'Siege Conducteur Electrique': 'siege-conducteur-electrique'
+  };
+  
+  // First try exact match
+  const exactMatch = fieldMappings[key];
+  if (exactMatch && window.getTranslation) {
+    const translated = window.getTranslation(exactMatch);
+    if (translated && translated !== exactMatch) {
+      return translated;
+    }
+  }
+  
+  // Then try lowercase version
+  const lowerKey = key.toLowerCase();
+  const lowerMatch = fieldMappings[lowerKey];
+  if (lowerMatch && window.getTranslation) {
+    const translated = window.getTranslation(lowerMatch);
+    if (translated && translated !== lowerMatch) {
+      return translated;
+    }
+  }
+  
+  // Fallback to direct translation of the key
+  if (window.getTranslation) {
+    const translated = window.getTranslation(key);
+    if (translated && translated !== key) {
+      return translated;
+    }
+  }
+  
+  return key;
+}
 
   // Function to fetch random cars
   async function fetchRandomCars(currentCarId) {
@@ -171,16 +214,27 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Translate Technical Specs with both key and value translation
-      const technicalSpecs = {};
-      Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
-        if (val && val !== "Pas Disponible") {
-          console.log("Original Key:", key, "Original Value:", val);
-          const translatedKey = translateKey(key);
-          const translatedValue = translateValue(val);
-          console.log("Translated Key:", translatedKey, "Translated Value:", translatedValue);
-          technicalSpecs[translatedKey] = translatedValue;
-        }
-      });
+      // Translate Technical Specs with both key and value translation
+const technicalSpecs = {};
+Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
+  if (val && val !== "Pas Disponible" && val !== "Not Available") {
+    const translatedKey = translateKey(key);
+    const translatedValue = translateValue(val, 'technical');
+    
+    // Special handling for boolean-like values
+    if (typeof val === 'string') {
+      const lowerVal = val.toLowerCase();
+      if (lowerVal === 'oui' || lowerVal === 'non' || 
+          lowerVal === 'yes' || lowerVal === 'no' ||
+          lowerVal === 'نعم' || lowerVal === 'لا') {
+        technicalSpecs[translatedKey] = translateValue(lowerVal);
+        return;
+      }
+    }
+    
+    technicalSpecs[translatedKey] = translatedValue;
+  }
+});
 
       // Pick description based on language
       const description = currentLang === 'ar'
