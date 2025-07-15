@@ -174,8 +174,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const technicalSpecs = {};
       Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
         if (val && val !== "Pas Disponible") {
+          console.log("Original Key:", key, "Original Value:", val);
           const translatedKey = translateKey(key);
           const translatedValue = translateValue(val);
+          console.log("Translated Key:", translatedKey, "Translated Value:", translatedValue);
           technicalSpecs[translatedKey] = translatedValue;
         }
       });
