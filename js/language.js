@@ -23,6 +23,7 @@ const translations = {
     'loading-error': 'Erreur lors du chargement',
     'description': 'Description:',
     'location-btn': 'Localisation',
+    'technical_specs': 'Specifications Techniques',
     'call-btn': 'Appeler',
     'phone-numbers': 'Numeros de telephone:',
     'call': 'Appeler',
@@ -50,7 +51,6 @@ const translations = {
     'non': 'Non',
     'manuelle': 'Manuelle',
     'automatique': 'Automatique',
-    'cvt': 'CVT',
     'blanc': 'Blanc',
     'gris-souris': 'Gris souris',
     'gris-argent': 'Gris argent',
@@ -124,6 +124,7 @@ const translations = {
     'location-btn': 'الموقع',
     'call-btn': 'اتصل',
     'phone-numbers': 'أرقام الهاتف:',
+    'technical_specs': 'المواصفات التقنية',
     'call': 'اتصل',
     'copy': 'نسخ',
     'copied': 'تم النسخ!',
@@ -142,8 +143,8 @@ const translations = {
     'power': 'القوة',
     'cylindre': 'الأسطوانات',
     'abs': 'ABS',
-    'disponible': 'متاح',
-    'sur-command': 'على الطلب',
+    'Disponible': 'متاح',
+    'Sur-Commande': 'على الطلب',
     'voitures-sur-commande': 'سيارات على الطلب',
     'oui': 'نعم',
     'non': 'لا',
@@ -199,13 +200,10 @@ const translations = {
         'couleur': 'اللون',
   }
 };
-
 const detailTranslations = {
   fr: {
-
   },
   ar: {
-
   }
 };
 
