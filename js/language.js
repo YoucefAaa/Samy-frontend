@@ -202,7 +202,10 @@ const translations = {
 
 const detailTranslations = {
   fr: {
-   
+
+  },
+  ar: {
+
   }
 };
 
