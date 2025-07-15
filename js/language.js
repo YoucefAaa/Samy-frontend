@@ -35,12 +35,6 @@ const translations = {
     'finish': 'Finition',
     'motor': 'Motor',
     'gearbox': 'Boite',
-    'economical': 'economique',
-    'suv': 'SUV',
-    'citadine': 'Citadine',
-    'en': 'Essence',
-    'diesel': 'Diesel',
-    'hybrid': 'Hybride',
     'information': 'Informations principales',
     'boit-manuelle': 'Manuelle',
     'technical-specs': 'Specifications techniques',
@@ -64,7 +58,6 @@ const translations = {
     'price': 'Prix',
     'calling': 'Appelez-nous:',
     'energie': 'energie',
-
     'annee': 'Annee',
     'finition': 'Finition',
     'cylindre': 'Cylindres',
@@ -103,11 +96,6 @@ const translations = {
         'fatigue': 'Detecteur de Fatigue',
         'availability': 'Disponibilite',
         'couleur': 'Couleur',
-        
-
-
-
-
   },
   ar: {
     'order-info-title': 'معلومات حول الطلبات',
@@ -128,7 +116,6 @@ const translations = {
     'voitures-disponibles': 'سيارات متوفرة',
     'available-description': 'سيارات جاهزة',
     'order-description': 'سيارات متوفرة على الطلب',
-    
     'pret': 'جاهزة ',
     'view-more': 'عرض المزيد',
     'car-not-found': 'السيارة غير موجودة',
@@ -148,18 +135,8 @@ const translations = {
     'colors': 'الألوان',
     'motor': 'المحرك',
     'gearbox': 'علبة السرعات',
-    'new': 'جديد',
-    'used': 'مستعمل',
-    'luxury': 'فخم',
-    'economical': 'اقتصادي',
-    'suv': 'دفع رباعي',
-    'citadine': 'مدينة',
-    'energie': 'بنزين',
-    'diesel': 'ديزل',
-    'hybrid': 'هجين',
     'information': 'المعلومات الرئيسية',
     'details': 'تفاصيل السيارة',
-    'boit-manuelle': 'يدوي',
     'technical-specs': 'المواصفات التقنية',
     'basic-details': 'التفاصيل الأساسية',
     'power': 'القوة',
@@ -172,14 +149,13 @@ const translations = {
     'non': 'لا',
     'manuelle': 'يدوي',
     'automatique': 'أوتوماتيكي',
-    'cvt': 'CVT',
     'blanc': 'أبيض',
     'gris-souris': 'رمادي فأري',
     'gris-argent': 'رمادي فضي',
     'siege-chauffants': 'مقاعد مدفأة',
     'tags': 'العلامات',
     'price': 'السعر',
-    'en': 'بنزين',
+
     'calling': 'اتصل بنا:',
     'energie': 'الطاقة',
     'etat': 'الحالة',
@@ -221,104 +197,12 @@ const translations = {
         'fatigue': 'مستشعر التعب',
         'availability': 'توفر السيارة',
         'couleur': 'اللون',
-
-
-
   }
 };
 
 const detailTranslations = {
   fr: {
-    'etat': 'Etat',
-    'annee': 'Annee',
-    'finition': 'Finition',
-    'energie': 'Energie',
-    'motor': 'Motor',
-    'power': 'Puissance',
-    'cylindre': 'Cylindres',
-    'boite': 'Boite',
-    'voitures-disponibles': 'Voitures Disponibles',
-    'abs': 'ABS',
-    'view-cars': 'Voir les voitures',
-    'available-description': 'Voitures prêtes',
-    'camera-540': 'Camera 540°',
-    'stationnement-automatique': 'Stationnement Automatique',
-    'disponible': 'Disponible',
-    'pret': 'Prêt à partir',
-    'sur-command': 'Sur commande',
-    'voitures-sur-commande': 'Voitures Sur Commande',
-    'oui': 'Oui',
-    'non': 'Non',
-    'manuelle': 'Manuelle',
-    'automatique': 'Automatique',
-    'cvt': 'CVT',
-    'blanc': 'Blanc',
-    'gris-souris': 'Gris souris',
-    'gris-argent': 'Gris argent',
-    'neuf': 'Neuf',
-    'occasion': 'Occasion',
-    'en': 'Essence',
-    'energie': 'energie',
-
-    'annee': 'Annee',
-    'finition': 'Finition',
-    'motor': 'Moteur',
-    'power': 'Puissance',
-    'cylindre': 'Cylindres',
-    'boite': 'Boîte de vitesse',
-
-
-    
-    'available': 'Disponible',
-    'not-available': 'Pas Disponible'
-  },
-  ar: {
-    'etat': 'الحالة',
-    'annee': 'السنة',
-    'finition': 'الموديل',
-    'energie': 'الوقود',
-    'motor': 'المحرك',
-    'power': 'القوة',
-    'cylindre': 'الأسطوانات',
-    'boite': 'ناقل الحركة',
-    'abs': 'ABS',
-    'voitures-disponibles': 'سيارات متوفرة',
-    'view-cars': 'عرض السيارات',
-    'radar-stationnement-avant': 'رادار ركن أمامي',
-    'radar-stationnement-arriere': 'رادار ركن خلفي',
-    'assistance-au-freinage': 'مساعدة الفرامل',
-    'controle-de-traction': 'نظام التحكم في الجر',
-    'controle-de-stabilite': 'نظام التحكم في الثبات',
-    'camera-540': 'كاميرا 540°',
-    'stationnement-automatique': 'ركن أوتوماتيكي',
-
-    'disponible': 'متاح',
-    'sur-command': 'على الطلب',
-    'available-description': 'سيارات جاهزة',
-    'voitures-sur-commande': 'سيارات على الطلب',
-
-    'pret': 'جاهزة',
-    'oui': 'نعم',
-    'non': 'لا',
-    'manuelle': 'يدوي',
-    'automatique': 'أوتوماتيكي',
-    
-    'cvt': 'CVT',
-    'blanc': 'أبيض',
-    'neuf': 'جديد',
-    'occasion': 'مستعمل',
-    'en': 'بنزين',
-    'energie': 'الطاقة',
-    'etat': 'الحالة',
-    'annee': 'السنة',
-    'finition': 'الموديل',
-    'motor': 'المحرك',
-    'power': 'القوة',
-    'cylindre': 'الأسطوانات',
-    'boite': 'علبة السرعات',
-
-
-    
+   
   }
 };
 
