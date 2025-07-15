@@ -87,12 +87,20 @@ const translations = {
         'camera-de-recul': 'Camera de Recul',
         'ecran-tactile': 'Ecran Tactile',
         'airbags-supplementaires': 'Airbags Supplementaires',
-        'les-gants-en-alliage': 'Les Gants en Alliage',
         'camera-de-360-degres': 'Camera 360 Degres',
         'la-malle-electrique': 'La Malle electrique',
         'sans-cle': 'Entree et Demarrage sans Cle',
         'amb-light': 'Lumiere Ambiante',
-        'ret-rab': 'Retroviseurs Rabattables'
+        'ret-rab': 'Retroviseurs Rabattables',
+        'fro-light': 'Feux Avant',
+        'antibrouillard': 'Antibrouillard',
+        'rain': 'Detecteur de Pluie',
+        'speed-fix': 'Regulateur de Vitesse',
+        'line-assist': 'Aide au Maintien de Voie',
+        'carsh': 'Alerte Collision',
+        'dead-angle': 'Detecteur d’Angles Mort',
+        'autohold': 'Autohold',
+        'fatigue': 'Detecteur de Fatigue'
         
 
 
@@ -184,7 +192,7 @@ const translations = {
         'climatisation-automatique': 'تكييف هواء أوتوماتيكي',
         'toit-ouvrant': 'فتحة سقف',
         'siege-conducteur-electrique': 'مقعد السائق كهربائي',
-        'siege-conducteur-electrique': 'مقعد السائق كهربائي',
+        'siege-passager-electrique': 'مقعد الراكب كهربائي',
         'siege-climatises': 'مقاعد مكيفة',
         'digital-cockpit': 'لوحة عدادات رقمية',
         'stationnement-automatique': 'ركن أوتوماتيكي',
@@ -194,12 +202,20 @@ const translations = {
         'camera-de-recul': 'كاميرا الرجوع للخلف',
         'ecran-tactile': 'شاشة لمس',
         'airbags-supplementaires': 'وسائد هوائية إضافية',
-        'les-gants-en-alliage': 'قفازات السبائك',
         'camera-de-360-degres': 'كاميرا 360 درجة',
         'la-malle-electrique': 'الصندوق الخلفي الكهربائي',
         'sans-cle': 'دخول وتشغيل بدون مفتاح',
         'amb-light': 'إضاءة محيطية',
         'ret-rab': 'المرايا القابلة للطي',
+        'fro-light': 'أضواء أمامية',
+        'antibrouillard' : 'أضواء ضبابية',
+        'rain': 'مستشعر المطر',
+        'speed-fix': 'مثبت السرعة',
+        'line-assist': 'مساعدة الحفاظ على المسار',
+        'carsh': 'تنبيه التصادم',
+        'dead-angle': 'نظام مراقبة النقطة العمياء',
+        'autohold': 'نظام التوقف المؤقت للصعود',
+        'fatigue': 'مستشعر التعب'
 
 
 
@@ -220,11 +236,6 @@ const detailTranslations = {
     'voitures-disponibles': 'Voitures Disponibles',
     'abs': 'ABS',
     'view-cars': 'Voir les voitures',
-    'radar-stationnement-avant': 'Radar stationnement avant',
-    'radar-stationnement-arriere': 'Radar stationnement arriere',
-    'assistance-au-freinage': 'Assistance Au Freinage',
-    'controle-de-traction': 'Contrôle de Traction',
-    'controle-de-stabilite': 'Contrôle de Stabilite',
     'available-description': 'Voitures prêtes',
     'camera-540': 'Camera 540°',
     'stationnement-automatique': 'Stationnement Automatique',

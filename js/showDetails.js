@@ -105,6 +105,21 @@ function translateKey(key) {
     'Lumiere Ambiante': 'amb-light',
     'La Malle electrique': 'la-malle-electrique',
     'Retroviseurs Rabattables': 'ret-rab',
+    'Feux Avant': 'fro-light',
+    'Antibrouillard' : 'antibrouillard',
+    'Camera de Recul': 'camera-de-recul',
+    'Camera de 360 Degres': 'camera-de-360-degres',
+    'Detecteur de Pluie': 'rain',
+    'Airbags Supplementaires': 'airbags-supplementaires',
+    'Radar Stationnement Avant': 'radar-stationnement-avant',
+    'Radar Stationnement Arriere': 'radar-stationnement-arriere',
+    'Regulateur de Vitesse': 'speed-fix',
+    'Aide au Maintien de Voie': 'line-assist',
+    'Alerte Collision': 'carsh',
+    'Detecteur d’Angles Mort': 'dead-angle',
+    'Autohold': 'autohold',
+    'Detecteur de Fatigue': 'fatigue',
+
 
 
   };
