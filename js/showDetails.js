@@ -92,10 +92,15 @@ function translateKey(key) {
     'Assistance Au Freinage': 'assistance-au-freinage',
     'Contrôle de Traction': 'controle-de-traction',
     'Contrôle de Stabilite': 'controle-de-stabilite',
-    'Toit ouvrant': 'toit-ouvrant',
+    'Toit Ouvrant': 'toit-ouvrant',
+    'Climatisation Automatique': 'climatisation-automatique',
     'Stationnement Automatique': 'stationnement-automatique',
     'Siege Passager Electrique': 'siege-passager-electrique',
-    'Siege Conducteur Electrique': 'siege-conducteur-electrique'
+    'Siege Conducteur Electrique': 'siege-conducteur-electrique',
+    'Siege Chauffants': 'siege-chauffants',
+    'siege-climatises': 'Siege Climatises'
+
+
   };
   
   // First try exact match
