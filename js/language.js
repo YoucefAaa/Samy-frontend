@@ -380,22 +380,8 @@ function getDetailTranslation(key) {
   return detailTranslations[currentLanguage][key] || key;
 }
 
-function translateValue(value, context = null) {
-  if (value === 'available' || value === 'not-available') {
-    return getTranslation(value);
-  }
-  
-  const commonTranslations = {
-    'manuelle': currentLanguage === 'ar' ? 'يدوي' : 'Manuelle',
-    'automatique': currentLanguage === 'ar' ? 'أوتوماتيكي' : 'Automatique',
-    'cvt': 'CVT',
-    'en': currentLanguage === 'ar' ? 'بنزين' : 'Essence',
-    'diesel': currentLanguage === 'ar' ? 'ديزل' : 'Diesel',
-    'oui': currentLanguage === 'ar' ? 'نعم' : 'Oui',
-    'non': currentLanguage === 'ar' ? 'لا' : 'Non'
-  };
-  
-  return commonTranslations[value] || value;
+function translateValue(value) {
+  return detailTranslations[currentLanguage][value] || value;
 }
 
 window.getTranslation = getTranslation;
