@@ -386,16 +386,10 @@ Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
             <h2 class="text-[4rem] lg:text-2xl font-bold mb-6 text-center">${window.getTranslation ? window.getTranslation('other-cars') : 'Autres voitures disponibles'}</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               ${randomCars.map(randomCar => {
-                const randomCarDisplayTags = [
-                  randomCar.basic_details?.Annee,
-                  randomCar.basic_details?.Etat,
-                  randomCar.technical_specs?.Energie,
-                  randomCar.technical_specs?.Motor,
-                  randomCar.technical_specs?.Power
-                ].filter(Boolean);
-                
-                // Properly translate random car tags
-                const randomCarTags = randomCarDisplayTags.map(tag => translateValue(tag));
+                              // Get tags based on current language (same as renderAvailableCars.js)
+                const currentLang = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
+                const userTags = currentLang === 'ar' ? randomCar.tags_ar : randomCar.tags_fr;
+                const displayTags = (userTags && userTags.length > 0) ? userTags : [];
                 
                 const randomCarImage = randomCar.images && randomCar.images.length > 0 ? randomCar.images[0] : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2Y3ZjdmNyIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMThweCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlIEF2YWlsYWJsZTwvdGV4dD4KPC9zdmc+';
                 
@@ -404,7 +398,7 @@ Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
                     <img src="https://samy-auto.onrender.com${randomCarImage}" alt="${randomCar.title}" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
                     <h3 class="text-[4.2rem] lg:text-2xl font-bold mb-4 text-center">${randomCar.title_ar && isRTL ? randomCar.title_ar : randomCar.title}</h3>
                     <div class="flex flex-wrap gap-2 mb-[4.2rem] lg:mb-[2.4rem]">
-                      ${randomCarTags.map(tag => `<span class="bg-blue-100 text-blue-700 text-[2.1rem] lg:text-sm px-6 lg:px-3 py-2 lg:py-2 rounded-md">${tag}</span>`).join('')}
+                      ${displayTags.map(tag => `<span class="bg-blue-100 text-blue-700 text-[2.1rem] lg:text-sm px-6 lg:px-3 py-2 lg:py-2 rounded-md">${tag}</span>`).join('')}
                     </div>
                     <p class="text-red-600 text-[4.2rem] lg:text-2xl font-semibold mb-4 text-center">${randomCar.price} ${isRTL ? 'دج' : 'DA'}</p>
                     <div class="flex justify-center">
