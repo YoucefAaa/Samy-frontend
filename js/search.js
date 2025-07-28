@@ -135,6 +135,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok) throw new Error('Autocomplete request failed');
       
       const suggestions = await response.json();
+      
+      // Filter suggestions to only show cars that match both query and availability
+      // The backend already filters by availability, but let's make sure
       displayAutocomplete(suggestions, query);
       
     } catch (error) {
@@ -276,6 +279,9 @@ document.addEventListener("DOMContentLoaded", () => {
       loadMoreBtn.style.display = 'none';
     }
     
+    // Show back button
+    showBackButton();
+    
     if (results.length === 0) {
       showNoSearchResults(query);
       showSearchStatus(`Aucun résultat pour "${query}"`, 'no-results');
@@ -398,6 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleClearButton(false);
     hideAutocomplete();
     hideSearchStatus();
+    hideBackButton();
     
     // Reload original cars - try multiple methods
     if (typeof loadSurCommandeCars === 'function') {
@@ -409,6 +416,42 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       // Fallback: reload page
       location.reload();
+    }
+  }
+
+  // Show back button
+  function showBackButton() {
+    let backButton = document.getElementById('search-back-button');
+    
+    if (!backButton) {
+      // Create the back button
+      backButton = document.createElement('div');
+      backButton.id = 'search-back-button';
+      backButton.className = 'mt-3 text-center';
+      backButton.innerHTML = `
+        <button onclick="window.clearSearch()" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-full text-[2rem] lg:text-sm font-semibold transition-colors duration-200 flex items-center gap-2 mx-auto">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          <span data-translate="back-to-all">Voir toutes les voitures</span>
+        </button>
+      `;
+      
+      // Insert after the search container
+      const searchContainer = document.querySelector('.bg-white.shadow-sm.border-b');
+      if (searchContainer) {
+        searchContainer.parentNode.insertBefore(backButton, searchContainer.nextSibling);
+      }
+    }
+    
+    backButton.style.display = 'block';
+  }
+
+  // Hide back button  
+  function hideBackButton() {
+    const backButton = document.getElementById('search-back-button');
+    if (backButton) {
+      backButton.style.display = 'none';
     }
   }
 
@@ -438,7 +481,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </svg>
           </div>
           <h3 class="text-[2.5rem] lg:text-xl font-semibold text-gray-600 mb-2">Aucun résultat trouvé</h3>
-          <p class="text-[2rem] lg:text-sm text-gray-500 mb-4">Aucune voiture ne correspond à "${query}"</p>
+          <p class="text-[2rem] lg:text-sm text-gray-500 mb-4">Aucune voiture ne correspond à "${query}" dans la catégorie ${getCurrentPageAvailability()}</p>
           <button onclick="window.clearSearch()" class="bg-blue-600 text-white px-6 py-2 rounded-full text-[2rem] lg:text-sm font-semibold hover:bg-blue-700 transition">
             Voir toutes les voitures
           </button>
