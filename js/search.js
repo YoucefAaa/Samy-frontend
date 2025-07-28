@@ -234,8 +234,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show search status
     showSearchStatus(`Recherche de "${query}"...`, 'loading');
     
-    // Show loading
-    showLoading(true);
+    // Show loading - use existing function or create our own
+    if (typeof showLoading === 'function') {
+      showLoading(true);
+    } else {
+      toggleLoadingState(true);
+    }
     
     const availability = getCurrentPageAvailability();
     
@@ -251,7 +255,11 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error('Search error:', error);
       showSearchError();
     } finally {
-      showLoading(false);
+      if (typeof showLoading === 'function') {
+        showLoading(false);
+      } else {
+        toggleLoadingState(false);
+      }
     }
   }
 
@@ -275,14 +283,78 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // Show results
-    hideNoResults();
+    if (typeof hideNoResults === 'function') {
+      hideNoResults();
+    }
     showSearchStatus(`${results.length} résultat${results.length > 1 ? 's' : ''} pour "${query}"`, 'success');
     
-    // Render car cards (reuse existing function)
+    // Render car cards - use existing function if available
     results.forEach(car => {
-      const card = createCarCard(car);
+      let card;
+      if (typeof createCarCard === 'function') {
+        card = createCarCard(car);
+      } else {
+        card = createSearchCarCard(car);
+      }
       container.appendChild(card);
     });
+  }
+
+  // Fallback function to create car cards if createCarCard doesn't exist
+  function createSearchCarCard(car) {
+    const card = document.createElement('div');
+    card.className = 'bg-white rounded-2xl shadow p-6 hover:shadow-2xl transition duration-300';
+
+    const language = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
+    const userTags = language === 'ar' ? car.tags_ar : car.tags_fr;
+    const userTagsClean = (userTags && userTags.length > 0) ? userTags : [];
+    
+    const imageUrl = car.images.length > 0 
+      ? `https://samy-auto.onrender.com${car.images[0]}` 
+      : 'images/default.jpg';
+
+    const availabilityBadge = createAvailabilityBadge(car.basic_details?.Availability);
+
+    card.innerHTML = `
+      <div class="relative">
+        <img src="${imageUrl}" alt="${car.title}" loading="lazy" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
+        ${availabilityBadge}
+      </div>
+      <h3 class="text-[4.2rem] lg:text-2xl font-bold mb-4 text-center">${car.title}</h3>
+      <div class="flex flex-wrap gap-2 mb-[4.2rem] lg:mb-[2.4rem]">
+        ${userTagsClean.map(tag => `<span class="bg-blue-100 text-blue-700 text-[2.1rem] lg:text-sm px-6 lg:px-3 py-2 lg:py-2 rounded-md">${tag}</span>`).join('')}
+      </div>
+      <p class="text-red-600 text-[4.2rem] lg:text-2xl font-semibold mb-4 text-center">
+        ${car.price} ${window.getCurrentLanguage && window.getCurrentLanguage() === 'ar' ? 'دج' : 'DA'}
+      </p>
+      <div class="flex justify-center">
+        <a href="details.html?id=${car.id}" class="bg-blue-600 text-white text-center py-3 px-80 lg:px-8 rounded-full text-[3rem] lg:text-lg font-semibold hover:bg-blue-700 transition">
+          ${window.getTranslation ? window.getTranslation('view-more') : 'Voir Plus'}
+        </a>
+      </div>
+    `;
+
+    return card;
+  }
+
+  // Create availability badge
+  function createAvailabilityBadge(availability) {
+    if (!availability) return '';
+    
+    const isSurCommande = availability.toLowerCase() === 'sur commande';
+    const badgeClass = isSurCommande 
+      ? 'bg-blue-500 text-white' 
+      : 'bg-gray-500 text-white';
+    
+    const badgeText = isSurCommande 
+      ? (window.getTranslation ? window.getTranslation('Sur command') || 'Sur Commande' : 'Sur Commande')
+      : availability;
+    
+    return `
+      <div class="absolute top-2 right-2 ${badgeClass} px-3 py-1 rounded-full text-[1.5rem] lg:text-xs font-semibold shadow-md">
+        ${badgeText}
+      </div>
+    `;
   }
 
   // Show search status message
@@ -316,6 +388,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Clear search
+  function clearSearch() {
+    const searchInput = document.getElementById('search-input');
+    searchInput.value = '';
+    currentSearchQuery = '';
+    isSearchActive = false;
+    
+    toggleClearButton(false);
+    hideAutocomplete();
+    hideSearchStatus();
+    
+    // Reload original cars - try multiple methods
+    if (typeof loadSurCommandeCars === 'function') {
+      loadSurCommandeCars();
+    } else if (typeof loadCars === 'function') {
+      loadCars();
+    } else if (typeof window.loadSurCommandeCars === 'function') {
+      window.loadSurCommandeCars();
+    } else {
+      // Fallback: reload page
+      location.reload();
+    }
+  }
+
+  // Custom loading toggle function
+  function toggleLoadingState(show) {
+    const container = document.getElementById('card-container');
+    
+    if (show) {
+      container.innerHTML = `
+        <div class="col-span-full flex justify-center items-center py-12">
+          <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
+        </div>
+      `;
+    }
+    // Don't clear when hiding - let displaySearchResults handle it
+  }
+
   // Show no search results message
   function showNoSearchResults(query) {
     const container = document.getElementById('card-container');
@@ -329,7 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <h3 class="text-[2.5rem] lg:text-xl font-semibold text-gray-600 mb-2">Aucun résultat trouvé</h3>
           <p class="text-[2rem] lg:text-sm text-gray-500 mb-4">Aucune voiture ne correspond à "${query}"</p>
-          <button onclick="clearSearch()" class="bg-blue-600 text-white px-6 py-2 rounded-full text-[2rem] lg:text-sm font-semibold hover:bg-blue-700 transition">
+          <button onclick="window.clearSearch()" class="bg-blue-600 text-white px-6 py-2 rounded-full text-[2rem] lg:text-sm font-semibold hover:bg-blue-700 transition">
             Voir toutes les voitures
           </button>
         </div>
@@ -340,28 +450,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Show search error
   function showSearchError() {
     showSearchStatus('Erreur lors de la recherche. Veuillez réessayer.', 'error');
-  }
-
-  // Clear search
-  function clearSearch() {
-    const searchInput = document.getElementById('search-input');
-    searchInput.value = '';
-    currentSearchQuery = '';
-    isSearchActive = false;
-    
-    toggleClearButton(false);
-    hideAutocomplete();
-    hideSearchStatus();
-    
-    // Reload original cars
-    if (typeof loadSurCommandeCars === 'function') {
-      loadSurCommandeCars();
-    } else if (typeof loadCars === 'function') {
-      loadCars();
-    } else {
-      // Fallback: reload page
-      location.reload();
-    }
   }
 
   // Make functions globally available
