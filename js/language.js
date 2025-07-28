@@ -84,6 +84,38 @@ const translations = {
     'not-available': 'Pas Disponible',
     'neuf': 'Neuf',
     'occasion': 'Occasion',
+    'search-placeholder': 'Ex: Clio, Duster, 2020, essence...',
+    'search-tips': 'Tapez au moins 2 caractères pour des suggestions automatiques',
+    'clear-search-title': 'Effacer la recherche',
+    
+    // Enhanced search status messages
+    'searching-in': 'Recherche dans',
+    'for': 'pour',
+    'searching-please-wait': 'Recherche en cours, veuillez patienter...',
+    'no-results-status': 'Aucun résultat trouvé pour',
+    'found-for': 'trouvé(s) pour',
+    'result': 'résultat',
+    'results': 'résultats',
+    'retry': 'Réessayer',
+    
+    // Enhanced no results messages
+    'no-results-title': 'Aucun résultat trouvé',
+    'no-results-for-query': 'Aucune voiture ne correspond à',
+    'search-suggestions-title': 'Suggestions :',
+    'check-spelling': 'Vérifiez l\'orthographe',
+    'try-different-words': 'Essayez des mots différents',
+    'try-general-terms': 'Utilisez des termes plus généraux',
+    'check-other-category': 'Consultez l\'autre catégorie',
+    'check-available': 'Voir les voitures disponibles',
+    'check-sur-commande': 'Voir les voitures sur commande',
+    
+    // Navigation
+    'back-to-search-results': 'Retour aux résultats de recherche',
+    'back-to-all': 'Voir toutes les voitures',
+    
+    // Categories
+    'disponible': 'Disponible',
+    'sur-commande': 'Sur Commande',
 
         'climatisation-automatique': 'Climatisation Automatique',
         'toit-ouvrant': 'Toit ouvrant',
@@ -204,6 +236,38 @@ const translations = {
     'not-available': 'غير متاح',
     'neuf': 'جديد',
     'occasion': 'مستعمل',
+    'search-placeholder': 'مثال: كليو، داستر، 2020، بنزين...',
+    'search-tips': 'اكتب حرفين على الأقل للحصول على اقتراحات تلقائية',
+    'clear-search-title': 'مسح البحث',
+    
+    // Enhanced search status messages
+    'searching-in': 'البحث في',
+    'for': 'عن',
+    'searching-please-wait': 'جاري البحث، يرجى الانتظار...',
+    'no-results-status': 'لم يتم العثور على نتائج لـ',
+    'found-for': 'موجود لـ',
+    'result': 'نتيجة',
+    'results': 'نتائج',
+    'retry': 'إعادة المحاولة',
+    
+    // Enhanced no results messages
+    'no-results-title': 'لم يتم العثور على نتائج',
+    'no-results-for-query': 'لا توجد سيارة تتطابق مع',
+    'search-suggestions-title': 'اقتراحات:',
+    'check-spelling': 'تحقق من الإملاء',
+    'try-different-words': 'جرب كلمات مختلفة',
+    'try-general-terms': 'استخدم مصطلحات أكثر عمومية',
+    'check-other-category': 'تحقق من الفئة الأخرى',
+    'check-available': 'عرض السيارات المتاحة',
+    'check-sur-commande': 'عرض السيارات تحت الطلب',
+    
+    // Navigation
+    'back-to-search-results': 'العودة لنتائج البحث',
+    'back-to-all': 'عرض جميع السيارات',
+    
+    // Categories
+    'disponible': 'متاح',
+    'sur-commande': 'تحت الطلب',
 
         'climatisation-automatique': 'تكييف هواء أوتوماتيكي',
         'toit-ouvrant': 'فتحة سقف',

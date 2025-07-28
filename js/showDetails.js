@@ -11,7 +11,67 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // In showDetails.js, replace the translateValue function with this:
+  // Enhanced back navigation that preserves search state
+  function createSmartBackButton(isRTL = false) {
+    const savedState = sessionStorage.getItem('searchState');
+    let backUrl = '/';
+    let backText = window.getTranslation ? window.getTranslation('back-to-list') : 'Retour à la liste';
+    
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        // Check if search state is recent (within 30 minutes)
+        if (Date.now() - state.timestamp < 30 * 60 * 1000) {
+          // Determine which page to go back to based on availability
+          if (state.availability === 'sur commande') {
+            backUrl = 'cars-sur-commande.html';
+          } else {
+            backUrl = 'cars-available.html';
+          }
+          backText = window.getTranslation ? 
+            window.getTranslation('back-to-search-results') || 'Retour aux résultats de recherche' : 
+            'Retour aux résultats de recherche';
+        }
+      } catch (e) {
+        console.error('Error parsing search state:', e);
+      }
+    }
+    
+    return `
+      <a href="${backUrl}" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-[2.5rem] lg:text-base transition-colors">
+        <svg class="w-8 h-8 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M14 5l-7 7 7 7' : 'M10 19l-7-7m0 0l7-7m-7 7h18'}"></path>
+        </svg>
+        ${backText}
+      </a>
+    `;
+  }
+
+  // Enhanced header back button
+  function enhanceHeaderBackButton() {
+    const headerBackButton = document.querySelector('header a[href="/"]');
+    if (headerBackButton) {
+      const savedState = sessionStorage.getItem('searchState');
+      if (savedState) {
+        try {
+          const state = JSON.parse(savedState);
+          // Check if search state is recent
+          if (Date.now() - state.timestamp < 30 * 60 * 1000) {
+            if (state.availability === 'sur commande') {
+              headerBackButton.href = 'cars-sur-commande.html';
+            } else {
+              headerBackButton.href = 'cars-available.html';
+            }
+          }
+        } catch (e) {
+          console.error('Error parsing search state for header:', e);
+        }
+      }
+    }
+  }
+
+
+
 function translateValue(value, context = null) {
   if (!value) return value;
   
