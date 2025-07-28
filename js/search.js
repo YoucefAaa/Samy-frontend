@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
     isSearchActive = true;
     
     // Show search status
-    showSearchStatus(`Recherche de "${query}"...`, 'loading');
+    showSearchStatus(`<span data-translate="searching">Recherche de</span> "${query}"...`, 'loading');
     
     // Show loading - use existing function or create our own
     if (typeof showLoading === 'function') {
@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (results.length === 0) {
       showNoSearchResults(query);
-      showSearchStatus(`Aucun résultat pour "${query}"`, 'no-results');
+      showSearchStatus(`<span data-translate="no-results-found">Aucun résultat pour</span> "${query}"`, 'no-results');
       return;
     }
     
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof hideNoResults === 'function') {
       hideNoResults();
     }
-    showSearchStatus(`${results.length} résultat${results.length > 1 ? 's' : ''} pour "${query}"`, 'success');
+    showSearchStatus(`${results.length} <span data-translate="result${results.length > 1 ? 's' : ''}">${results.length > 1 ? 'résultats' : 'résultat'}</span>`, 'success');
     
     // Render car cards - use existing function if available
     results.forEach(car => {
@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // Show search status message
+  // Show search status message - Updated to handle HTML content
   function showSearchStatus(message, type = 'info') {
     const statusElement = document.getElementById('search-status');
     if (!statusElement) return;
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     
     statusElement.className = `mt-3 text-[1.8rem] lg:text-sm ${colors[type] || 'text-gray-600'}`;
-    statusElement.textContent = message;
+    statusElement.innerHTML = message; // Changed from textContent to innerHTML
     statusElement.classList.remove('hidden');
     
     if (type === 'loading') {
@@ -469,9 +469,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Don't clear when hiding - let displaySearchResults handle it
   }
 
-  // Show no search results message
+  // Show no search results message - Updated with translatable HTML
   function showNoSearchResults(query) {
     const container = document.getElementById('card-container');
+    const availability = getCurrentPageAvailability();
+    
     container.innerHTML = `
       <div class="col-span-full text-center py-12">
         <div class="bg-white rounded-2xl shadow-lg p-8 lg:p-6 max-w-md mx-auto">
@@ -480,19 +482,26 @@ document.addEventListener("DOMContentLoaded", () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
-          <h3 class="text-[2.5rem] lg:text-xl font-semibold text-gray-600 mb-2">Aucun résultat trouvé</h3>
-          <p class="text-[2rem] lg:text-sm text-gray-500 mb-4">Aucune voiture ne correspond à "${query}" dans la catégorie ${getCurrentPageAvailability()}</p>
+          <h3 class="text-[2.5rem] lg:text-xl font-semibold text-gray-600 mb-2">
+            <span data-translate="no-results-title">Aucun résultat trouvé</span>
+          </h3>
+          <p class="text-[2rem] lg:text-sm text-gray-500 mb-4">
+            <span data-translate="no-results-message">Aucune voiture ne correspond à</span> 
+            <strong>"${query}"</strong> 
+            <span data-translate="in-category">dans la catégorie</span> 
+            <strong>${availability}</strong>
+          </p>
           <button onclick="window.clearSearch()" class="bg-blue-600 text-white px-6 py-2 rounded-full text-[2rem] lg:text-sm font-semibold hover:bg-blue-700 transition">
-            Voir toutes les voitures
+            <span data-translate="see-all-cars">Voir toutes les voitures</span>
           </button>
         </div>
       </div>
     `;
   }
 
-  // Show search error
+  // Show search error - Updated with translatable HTML
   function showSearchError() {
-    showSearchStatus('Erreur lors de la recherche. Veuillez réessayer.', 'error');
+    showSearchStatus('<span data-translate="search-error">Erreur lors de la recherche. Veuillez réessayer.</span>', 'error');
   }
 
   // Make functions globally available
