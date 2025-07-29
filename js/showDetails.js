@@ -210,52 +210,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Function to fetch random cars that match the current car's availability
-  async function fetchRandomCars(currentCarId, currentCarAvailability) {
-    try {
-      const response = await fetch('https://samy-auto.onrender.com/api/cars/');
-      if (!response.ok) throw new Error('Failed to fetch cars');
-      const allCars = await response.json();
+ async function fetchRandomCars(currentCarId, currentCarAvailability) {
+  try {
+    const response = await fetch('https://samy-auto.onrender.com/api/cars/');
+    if (!response.ok) throw new Error('Failed to fetch cars');
+    const allCars = await response.json();
+    
+    console.log('Current car availability:', currentCarAvailability);
+    console.log('Total cars fetched:', allCars.length);
+    
+    // Filter out current car and match availability
+    const matchingCars = allCars.filter(car => {
+      // Exclude current car
+      if (car.id === currentCarId) return false;
       
-      console.log('Current car availability:', currentCarAvailability);
-      console.log('Total cars fetched:', allCars.length);
+      // Get car availability from basic_details.Availability
+      const carAvailability = car.basic_details?.Availability;
       
-      // Filter out current car and match availability
-      const matchingCars = allCars.filter(car => {
-        // Exclude current car
-        if (car.id === currentCarId) return false;
-        
-        // Get car availability from basic_details.Availability
-        const carAvailability = car.basic_details?.Availability;
-        
-        console.log(`Car ${car.id} availability:`, carAvailability);
-        
-        // Match availability exactly
-        return carAvailability === currentCarAvailability;
-      });
+      console.log(`Car ${car.id} availability:`, carAvailability);
       
-      console.log('Matching cars found:', matchingCars.length);
-      
-      // If we have matching cars, shuffle and return 2
-      if (matchingCars.length > 0) {
-        const shuffled = matchingCars.sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 2);
-        console.log('Selected matching cars:', selected.map(c => c.id));
-        return selected;
-      }
-      
-      // Fallback: if no matching availability cars, return any other cars (excluding current)
-      console.log('No matching availability cars, using fallback');
-      const otherCars = allCars.filter(car => car.id !== currentCarId);
-      const shuffled = otherCars.sort(() => 0.5 - Math.random());
+      // Match availability exactly
+      return carAvailability === currentCarAvailability;
+    });
+    
+    console.log('Matching cars found:', matchingCars.length);
+    
+    // If we have matching cars, shuffle and return 2
+    if (matchingCars.length > 0) {
+      const shuffled = matchingCars.sort(() => 0.5 - Math.random());
       const selected = shuffled.slice(0, 2);
-      console.log('Fallback cars selected:', selected.map(c => c.id));
+      console.log('Selected matching cars:', selected.map(c => c.id));
       return selected;
-      
-    } catch (error) {
-      console.error('Error fetching random cars:', error);
-      return [];
     }
+    
+    // Return empty array if no matching cars found
+    return [];
+    
+  } catch (error) {
+    console.error('Error fetching random cars:', error);
+    return [];
   }
+}
 
   // Main fetch for car details - FIXED VERSION
   fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`)
