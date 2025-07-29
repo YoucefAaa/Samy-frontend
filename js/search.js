@@ -1,4 +1,3 @@
-// Enhanced search.js with better messaging and navigation preservation
 document.addEventListener("DOMContentLoaded", () => {
   // Search-related variables
   let searchTimeout = null;
@@ -20,47 +19,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Store search state in sessionStorage for navigation preservation
   function saveSearchState() {
-  if (isSearchActive && currentSearchQuery) {
-    const availability = getCurrentPageAvailability();
-    sessionStorage.setItem(`searchState_${availability}`, JSON.stringify({
-      query: currentSearchQuery,
-      availability: availability,
-      isActive: true,
-      timestamp: Date.now()
-    }));
+    if (isSearchActive && currentSearchQuery) {
+      sessionStorage.setItem('searchState', JSON.stringify({
+        query: currentSearchQuery,
+        availability: getCurrentPageAvailability(),
+        isActive: true,
+        timestamp: Date.now()
+      }));
+    }
   }
-}
 
   // Restore search state when returning from details page
   function restoreSearchState() {
-  const availability = getCurrentPageAvailability();
-  const savedState = sessionStorage.getItem(`searchState_${availability}`);
-  if (savedState) {
-    try {
-      const state = JSON.parse(savedState);
-      // Only restore if it's recent (within 30 minutes)
-      if (Date.now() - state.timestamp < 30 * 60 * 1000) {
-        const searchInput = document.getElementById('search-input');
-        if (searchInput && state.query) {
-          searchInput.value = state.query;
-          currentSearchQuery = state.query;
-          isSearchActive = state.isActive;
-          toggleClearButton(true);
-          // Perform the search after a short delay to ensure DOM is ready
-          setTimeout(() => {
-            performSearch();
-          }, 100);
+    const savedState = sessionStorage.getItem('searchState');
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        // Only restore if it's recent (within 30 minutes)
+        if (Date.now() - state.timestamp < 30 * 60 * 1000) {
+          const searchInput = document.getElementById('search-input');
+          if (searchInput && state.query) {
+            searchInput.value = state.query;
+            currentSearchQuery = state.query;
+            isSearchActive = state.isActive;
+            toggleClearButton(true);
+            // Perform the search after a short delay to ensure DOM is ready
+            setTimeout(() => {
+              performSearch();
+            }, 100);
+          }
+        } else {
+          // Clear old state
+          sessionStorage.removeItem('searchState');
         }
-      } else {
-        // Clear old state
-        sessionStorage.removeItem(`searchState_${availability}`);
+      } catch (e) {
+        console.error('Error restoring search state:', e);
+        sessionStorage.removeItem('searchState');
       }
-    } catch (e) {
-      console.error('Error restoring search state:', e);
-      sessionStorage.removeItem(`searchState_${availability}`);
     }
   }
-}
 
   // Initialize search functionality
   function initializeSearch() {
@@ -249,23 +246,17 @@ document.addEventListener("DOMContentLoaded", () => {
     highlightedIndex = -1;
   }
 
- 
-function toggleClearButton(show) {
-  const clearButton = document.getElementById('clear-search');
-  if (clearButton) {
-    if (show) {
-      clearButton.classList.remove('hidden');
-      // Add RTL positioning
-      if (document.documentElement.getAttribute('dir') === 'rtl') {
-        clearButton.classList.add('mr-2'); // or whatever spacing you need
+  // Toggle clear button visibility
+  function toggleClearButton(show) {
+    const clearButton = document.getElementById('clear-search');
+    if (clearButton) {
+      if (show) {
+        clearButton.classList.remove('hidden');
       } else {
-        clearButton.classList.add('ml-2');
+        clearButton.classList.add('hidden');
       }
-    } else {
-      clearButton.classList.add('hidden');
     }
   }
-}
 
   // Perform search
   async function performSearch() {
