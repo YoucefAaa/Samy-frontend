@@ -70,177 +70,199 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-
-
-function translateValue(value, context = null) {
-  if (!value) return value;
-  
-  const currentLang = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
-  
-  // First try direct translation
-  if (window.getDetailTranslation) {
-    const detailTranslation = window.getDetailTranslation(value);
-    if (detailTranslation && detailTranslation !== value) {
-      return detailTranslation;
-    }
-  }
-  
-  // Try general translation
-  if (window.getTranslation) {
-    // Try exact match
-    const generalTranslation = window.getTranslation(value);
-    if (generalTranslation && generalTranslation !== value) {
-      return generalTranslation;
+  function translateValue(value, context = null) {
+    if (!value) return value;
+    
+    const currentLang = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
+    
+    // First try direct translation
+    if (window.getDetailTranslation) {
+      const detailTranslation = window.getDetailTranslation(value);
+      if (detailTranslation && detailTranslation !== value) {
+        return detailTranslation;
+      }
     }
     
-    // Try lowercase version
-    const lowerValue = value.toLowerCase();
-    const lowerTranslation = window.getTranslation(lowerValue);
-    if (lowerTranslation && lowerTranslation !== lowerValue) {
-      return lowerTranslation;
+    // Try general translation
+    if (window.getTranslation) {
+      // Try exact match
+      const generalTranslation = window.getTranslation(value);
+      if (generalTranslation && generalTranslation !== value) {
+        return generalTranslation;
+      }
+      
+      // Try lowercase version
+      const lowerValue = value.toLowerCase();
+      const lowerTranslation = window.getTranslation(lowerValue);
+      if (lowerTranslation && lowerTranslation !== lowerValue) {
+        return lowerTranslation;
+      }
+      
+      // Try with spaces replaced by hyphens
+      const hyphenValue = value.replace(/\s+/g, '-');
+      const hyphenTranslation = window.getTranslation(hyphenValue);
+      if (hyphenTranslation && hyphenTranslation !== hyphenValue) {
+        return hyphenTranslation;
+      }
+      
+      // Try with spaces replaced by hyphens and lowercase
+      const hyphenLowerValue = hyphenValue.toLowerCase();
+      const hyphenLowerTranslation = window.getTranslation(hyphenLowerValue);
+      if (hyphenLowerTranslation && hyphenLowerTranslation !== hyphenLowerValue) {
+        return hyphenLowerTranslation;
+      }
     }
     
-    // Try with spaces replaced by hyphens
-    const hyphenValue = value.replace(/\s+/g, '-');
-    const hyphenTranslation = window.getTranslation(hyphenValue);
-    if (hyphenTranslation && hyphenTranslation !== hyphenValue) {
-      return hyphenTranslation;
+    // Fallback to translateValue function from language.js
+    if (window.translateValue) {
+      return window.translateValue(value, context);
     }
     
-    // Try with spaces replaced by hyphens and lowercase
-    const hyphenLowerValue = hyphenValue.toLowerCase();
-    const hyphenLowerTranslation = window.getTranslation(hyphenLowerValue);
-    if (hyphenLowerTranslation && hyphenLowerTranslation !== hyphenLowerValue) {
-      return hyphenLowerTranslation;
-    }
+    return value;
   }
-  
-  // Fallback to translateValue function from language.js
-  if (window.translateValue) {
-    return window.translateValue(value, context);
-  }
-  
-  return value;
-}
 
-// In showDetails.js, replace the translateKey function with this:
-function translateKey(key) {
-  if (!key) return key;
-  
-  // Direct translation lookup
-  if (window.getDetailTranslation) {
-    const translated = window.getDetailTranslation(key);
-    if (translated && translated !== key) {
-      return translated;
+  function translateKey(key) {
+    if (!key) return key;
+    
+    // Direct translation lookup
+    if (window.getDetailTranslation) {
+      const translated = window.getDetailTranslation(key);
+      if (translated && translated !== key) {
+        return translated;
+      }
     }
-  }
-  
-  // Try with common field mappings (enhanced version)
-  const fieldMappings = {
-    'Etat': 'etat',
-    'Annee': 'annee', 
-    'Finition': 'finition',
-    'Couleurs': 'couleur',
-    'Couleur': 'couleur',
-    'Energie': 'energie',
-    'Motor': 'motor',
-    'Power': 'power',
-    'Cylindre': 'cylindre',
-    'Boite': 'boite',
-    'ABS': 'abs',
-    'Climatisation': 'climatisation',
-    'Assistance Au Freinage': 'assistance-au-freinage',
-    'Contrôle de Traction': 'controle-de-traction',
-    'Contrôle de Stabilite': 'controle-de-stabilite',
-    'Toit Ouvrant': 'toit-ouvrant',
-    'Climatisation Automatique': 'climatisation-automatique',
-    'Stationnement Automatique': 'stationnement-automatique',
-    'Siege Passager Electrique': 'siege-passager-electrique',
-    'Siege Conducteur Electrique': 'siege-conducteur-electrique',
-    'Siege Chauffants': 'siege-chauffants',
-    'Siege Climatises': 'siege-climatises',
-    'Digital Cockpit': 'digital-cockpit',
-    'ecran Tactile': 'ecran-tactile',
-    'Entree et Demarrage sans Cle': 'sans-cle',
-    'Lumiere Ambiante': 'amb-light',
-    'La Malle electrique': 'la-malle-electrique',
-    'Retroviseurs Rabattables': 'ret-rab',
-    'Feux Avant': 'fro-light',
-    'Antibrouillard' : 'antibrouillard',
-    'Camera de Recul': 'camera-de-recul',
-    'Camera de 360 Degres': 'camera-de-360-degres',
-    'Detecteur de Pluie': 'rain',
-    'Airbags Supplementaires': 'airbags-supplementaires',
-    'Radar Stationnement Avant': 'radar-stationnement-avant',
-    'Radar Stationnement Arriere': 'radar-stationnement-arriere',
-    'Regulateur de Vitesse': 'speed-fix',
-    'Aide au Maintien de Voie': 'line-assist',
-    'Alerte Collision': 'carsh',
-    'Detecteur d’Angles Mort': 'dead-angle',
-    'Autohold': 'autohold',
-    'Detecteur de Fatigue': 'fatigue',
-    'Availability': 'availability',
-
-
-
-  };
-  
-  // First try exact match
-  const exactMatch = fieldMappings[key];
-  if (exactMatch && window.getTranslation) {
-    const translated = window.getTranslation(exactMatch);
-    if (translated && translated !== exactMatch) {
-      return translated;
+    
+    // Try with common field mappings (enhanced version)
+    const fieldMappings = {
+      'Etat': 'etat',
+      'Annee': 'annee', 
+      'Finition': 'finition',
+      'Couleurs': 'couleur',
+      'Couleur': 'couleur',
+      'Energie': 'energie',
+      'Motor': 'motor',
+      'Power': 'power',
+      'Cylindre': 'cylindre',
+      'Boite': 'boite',
+      'ABS': 'abs',
+      'Climatisation': 'climatisation',
+      'Assistance Au Freinage': 'assistance-au-freinage',
+      'Contrôle de Traction': 'controle-de-traction',
+      'Contrôle de Stabilite': 'controle-de-stabilite',
+      'Toit Ouvrant': 'toit-ouvrant',
+      'Climatisation Automatique': 'climatisation-automatique',
+      'Stationnement Automatique': 'stationnement-automatique',
+      'Siege Passager Electrique': 'siege-passager-electrique',
+      'Siege Conducteur Electrique': 'siege-conducteur-electrique',
+      'Siege Chauffants': 'siege-chauffants',
+      'Siege Climatises': 'siege-climatises',
+      'Digital Cockpit': 'digital-cockpit',
+      'ecran Tactile': 'ecran-tactile',
+      'Entree et Demarrage sans Cle': 'sans-cle',
+      'Lumiere Ambiante': 'amb-light',
+      'La Malle electrique': 'la-malle-electrique',
+      'Retroviseurs Rabattables': 'ret-rab',
+      'Feux Avant': 'fro-light',
+      'Antibrouillard' : 'antibrouillard',
+      'Camera de Recul': 'camera-de-recul',
+      'Camera de 360 Degres': 'camera-de-360-degres',
+      'Detecteur de Pluie': 'rain',
+      'Airbags Supplementaires': 'airbags-supplementaires',
+      'Radar Stationnement Avant': 'radar-stationnement-avant',
+      'Radar Stationnement Arriere': 'radar-stationnement-arriere',
+      'Regulateur de Vitesse': 'speed-fix',
+      'Aide au Maintien de Voie': 'line-assist',
+      'Alerte Collision': 'carsh',
+      'Detecteur d\'Angles Mort': 'dead-angle',
+      'Autohold': 'autohold',
+      'Detecteur de Fatigue': 'fatigue',
+      'Availability': 'availability',
+    };
+    
+    // First try exact match
+    const exactMatch = fieldMappings[key];
+    if (exactMatch && window.getTranslation) {
+      const translated = window.getTranslation(exactMatch);
+      if (translated && translated !== exactMatch) {
+        return translated;
+      }
     }
-  }
-  
-  // Then try lowercase version
-  const lowerKey = key.toLowerCase();
-  const lowerMatch = fieldMappings[lowerKey];
-  if (lowerMatch && window.getTranslation) {
-    const translated = window.getTranslation(lowerMatch);
-    if (translated && translated !== lowerMatch) {
-      return translated;
+    
+    // Then try lowercase version
+    const lowerKey = key.toLowerCase();
+    const lowerMatch = fieldMappings[lowerKey];
+    if (lowerMatch && window.getTranslation) {
+      const translated = window.getTranslation(lowerMatch);
+      if (translated && translated !== lowerMatch) {
+        return translated;
+      }
     }
-  }
-  
-  // Fallback to direct translation of the key
-  if (window.getTranslation) {
-    const translated = window.getTranslation(key);
-    if (translated && translated !== key) {
-      return translated;
+    
+    // Fallback to direct translation of the key
+    if (window.getTranslation) {
+      const translated = window.getTranslation(key);
+      if (translated && translated !== key) {
+        return translated;
+      }
     }
+    
+    return key;
   }
-  
-  return key;
-}
 
-  // Function to fetch random cars
-  async function fetchRandomCars(currentCarId) {
+  // Function to fetch random cars that match the current car's availability
+  async function fetchRandomCars(currentCarId, currentCarAvailability) {
     try {
       const response = await fetch('https://samy-auto.onrender.com/api/cars/');
       if (!response.ok) throw new Error('Failed to fetch cars');
       const allCars = await response.json();
       
-      // Filter out current car and get random 2 cars
+      // Filter out current car and match availability
+      const matchingCars = allCars.filter(car => {
+        // Exclude current car
+        if (car.id === currentCarId) return false;
+        
+        // Match availability - check both basic_details and direct property
+        const carAvailability = car.basic_details?.Availability || 
+                               car.basic_details?.Disponibilite || 
+                               car.availability || 
+                               car.disponibilite;
+        
+        return carAvailability === currentCarAvailability;
+      });
+      
+      // If we have matching cars, shuffle and return 2
+      if (matchingCars.length > 0) {
+        const shuffled = matchingCars.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 2);
+      }
+      
+      // Fallback: if no matching availability cars, return any other cars (excluding current)
       const otherCars = allCars.filter(car => car.id !== currentCarId);
       const shuffled = otherCars.sort(() => 0.5 - Math.random());
       return shuffled.slice(0, 2);
+      
     } catch (error) {
       console.error('Error fetching random cars:', error);
       return [];
     }
   }
 
-  // Main fetch for car details
-  Promise.all([
-    fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`),
-    fetchRandomCars(carId)
-  ])
-    .then(async ([carResponse, randomCars]) => {
+  // Main fetch for car details - FIXED VERSION
+  fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`)
+    .then(async (carResponse) => {
       if (!carResponse.ok) throw new Error('Car not found');
       const car = await carResponse.json();
       
+      // Get current car's availability
+      const currentCarAvailability = car.basic_details?.Availability || 
+                                    car.basic_details?.Disponibilite || 
+                                    car.availability || 
+                                    car.disponibilite;
+      
+      // Now fetch random cars with matching availability
+      const randomCars = await fetchRandomCars(carId, currentCarAvailability);
+      
+      // Continue with rendering
       const container = document.getElementById('car-details');
       const currentLang = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
       const isRTL = currentLang === 'ar';
@@ -301,27 +323,26 @@ function translateKey(key) {
       }
 
       // Translate Technical Specs with both key and value translation
-      // Translate Technical Specs with both key and value translation
-const technicalSpecs = {};
-Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
-  if (val && val !== "Pas Disponible" && val !== "Not Available") {
-    const translatedKey = translateKey(key);
-    const translatedValue = translateValue(val, 'technical');
-    
-    // Special handling for boolean-like values
-    if (typeof val === 'string') {
-      const lowerVal = val.toLowerCase();
-      if (lowerVal === 'oui' || lowerVal === 'non' || 
-          lowerVal === 'yes' || lowerVal === 'no' ||
-          lowerVal === 'نعم' || lowerVal === 'لا') {
-        technicalSpecs[translatedKey] = translateValue(lowerVal);
-        return;
-      }
-    }
-    
-    technicalSpecs[translatedKey] = translatedValue;
-  }
-});
+      const technicalSpecs = {};
+      Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
+        if (val && val !== "Pas Disponible" && val !== "Not Available") {
+          const translatedKey = translateKey(key);
+          const translatedValue = translateValue(val, 'technical');
+          
+          // Special handling for boolean-like values
+          if (typeof val === 'string') {
+            const lowerVal = val.toLowerCase();
+            if (lowerVal === 'oui' || lowerVal === 'non' || 
+                lowerVal === 'yes' || lowerVal === 'no' ||
+                lowerVal === 'نعم' || lowerVal === 'لا') {
+              technicalSpecs[translatedKey] = translateValue(lowerVal);
+              return;
+            }
+          }
+          
+          technicalSpecs[translatedKey] = translatedValue;
+        }
+      });
 
       // Pick description based on language
       const description = currentLang === 'ar'
@@ -392,7 +413,6 @@ Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
                 </div>
               `).join('')}
             </div>
-            
           </div>
 
           <!-- Description -->
@@ -446,7 +466,7 @@ Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
             <h2 class="text-[4rem] lg:text-2xl font-bold mb-6 text-center">${window.getTranslation ? window.getTranslation('other-cars') : 'Autres voitures disponibles'}</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               ${randomCars.map(randomCar => {
-                              // Get tags based on current language (same as renderAvailableCars.js)
+                // Get tags based on current language (same as renderAvailableCars.js)
                 const currentLang = window.getCurrentLanguage ? window.getCurrentLanguage() : 'fr';
                 const userTags = currentLang === 'ar' ? randomCar.tags_ar : randomCar.tags_fr;
                 const displayTags = (userTags && userTags.length > 0) ? userTags : [];
@@ -475,13 +495,13 @@ Object.entries(car.technical_specs || {}).forEach(([key, val]) => {
 
           <!-- Back Button -->
           <div class="text-center">
-  <a href="#" onclick="history.back(); return false;" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-[2.5rem] lg:text-base">
-    <svg class="w-8 h-8 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M14 5l-7 7 7 7' : 'M10 19l-7-7m0 0l7-7m-7 7h18'}"></path>
-    </svg>
-    ${window.getTranslation ? window.getTranslation('back-to-list') : 'Retour à la liste'}
-  </a>
-</div>
+            <a href="#" onclick="history.back(); return false;" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-[2.5rem] lg:text-base">
+              <svg class="w-8 h-8 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M14 5l-7 7 7 7' : 'M10 19l-7-7m0 0l7-7m-7 7h18'}"></path>
+              </svg>
+              ${window.getTranslation ? window.getTranslation('back-to-list') : 'Retour à la liste'}
+            </a>
+          </div>
         </div>
       `;
 
