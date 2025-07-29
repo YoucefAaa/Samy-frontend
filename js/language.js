@@ -84,7 +84,7 @@ const translations = {
     'not-available': 'Pas Disponible',
     'neuf': 'Neuf',
     'occasion': 'Occasion',
-    'search-placeholder': 'Ex: Clio, Duster, 2020, essence...',
+    'search-placeholder': 'Ex: Geely, Jetour...',
     'search-tips': 'Tapez au moins 2 caractères pour des suggestions automatiques',
     'clear-search-title': 'Effacer la recherche',
     
@@ -236,7 +236,7 @@ const translations = {
     'not-available': 'غير متاح',
     'neuf': 'جديد',
     'occasion': 'مستعمل',
-    'search-placeholder': 'مثال: كليو، داستر، 2020، بنزين...',
+    'search-placeholder': 'مثال: جيتور جيلي...',
     'search-tips': 'اكتب حرفين على الأقل للحصول على اقتراحات تلقائية',
     'clear-search-title': 'مسح البحث',
     
