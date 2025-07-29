@@ -216,30 +216,40 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok) throw new Error('Failed to fetch cars');
       const allCars = await response.json();
       
+      console.log('Current car availability:', currentCarAvailability);
+      console.log('Total cars fetched:', allCars.length);
+      
       // Filter out current car and match availability
       const matchingCars = allCars.filter(car => {
         // Exclude current car
         if (car.id === currentCarId) return false;
         
-        // Match availability - check both basic_details and direct property
-        const carAvailability = car.basic_details?.Availability || 
-                               car.basic_details?.Disponibilite || 
-                               car.availability || 
-                               car.disponibilite;
+        // Get car availability from basic_details.Availability
+        const carAvailability = car.basic_details?.Availability;
         
+        console.log(`Car ${car.id} availability:`, carAvailability);
+        
+        // Match availability exactly
         return carAvailability === currentCarAvailability;
       });
+      
+      console.log('Matching cars found:', matchingCars.length);
       
       // If we have matching cars, shuffle and return 2
       if (matchingCars.length > 0) {
         const shuffled = matchingCars.sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 2);
+        const selected = shuffled.slice(0, 2);
+        console.log('Selected matching cars:', selected.map(c => c.id));
+        return selected;
       }
       
       // Fallback: if no matching availability cars, return any other cars (excluding current)
+      console.log('No matching availability cars, using fallback');
       const otherCars = allCars.filter(car => car.id !== currentCarId);
       const shuffled = otherCars.sort(() => 0.5 - Math.random());
-      return shuffled.slice(0, 2);
+      const selected = shuffled.slice(0, 2);
+      console.log('Fallback cars selected:', selected.map(c => c.id));
+      return selected;
       
     } catch (error) {
       console.error('Error fetching random cars:', error);
@@ -253,11 +263,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!carResponse.ok) throw new Error('Car not found');
       const car = await carResponse.json();
       
-      // Get current car's availability
-      const currentCarAvailability = car.basic_details?.Availability || 
-                                    car.basic_details?.Disponibilite || 
-                                    car.availability || 
-                                    car.disponibilite;
+      // Get current car's availability - simplified to match API structure
+      const currentCarAvailability = car.basic_details?.Availability;
+      console.log('Current car details:', car.id, 'Availability:', currentCarAvailability);
       
       // Now fetch random cars with matching availability
       const randomCars = await fetchRandomCars(carId, currentCarAvailability);
