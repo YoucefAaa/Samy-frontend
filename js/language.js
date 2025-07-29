@@ -84,7 +84,7 @@ const translations = {
     'not-available': 'Pas Disponible',
     'neuf': 'Neuf',
     'occasion': 'Occasion',
-    'search-placeholder': 'Ex: Geely, Jetour...',
+    'search-place': 'Ex: Geely, Jetour...',
     'search-tips': 'Tapez au moins 2 caractères pour des suggestions automatiques',
     'clear-search-title': 'Effacer la recherche',
     
@@ -236,7 +236,7 @@ const translations = {
     'not-available': 'غير متاح',
     'neuf': 'جديد',
     'occasion': 'مستعمل',
-    'search-placeholder': 'مثال: جيتور جيلي...',
+    'search-place': 'مثال: جيتور جيلي...',
     'search-tips': 'اكتب حرفين على الأقل للحصول على اقتراحات تلقائية',
     'clear-search-title': 'مسح البحث',
     
