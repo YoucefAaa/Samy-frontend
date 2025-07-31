@@ -141,7 +141,7 @@ const translations = {
         'speed-fix': 'Regulateur de Vitesse',
         'line-assist': 'Aide au Maintien de Voie',
         'carsh': 'Alerte Collision',
-        'dead-angle': 'Detecteur d’Angles Mort',
+        'dead-angle': 'Detecteur Angles Mort',
         'autohold': 'Autohold',
         'fatigue': 'Detecteur de Fatigue',
         'availability': 'Disponibilite',
