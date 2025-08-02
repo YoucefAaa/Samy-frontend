@@ -157,8 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok) throw new Error('Failed to fetch cars');
       const allCars = await response.json();
       
-      console.log('Current car availability:', currentCarAvailability);
-      console.log('Total cars fetched:', allCars.length);
       
       // Filter out current car and match availability
       const matchingCars = allCars.filter(car => {
@@ -168,19 +166,16 @@ document.addEventListener("DOMContentLoaded", () => {
         // Get car availability from basic_details.Availability
         const carAvailability = car.basic_details?.Availability;
         
-        console.log(`Car ${car.id} availability:`, carAvailability);
         
         // Match availability exactly
         return carAvailability === currentCarAvailability;
       });
       
-      console.log('Matching cars found:', matchingCars.length);
       
       // If we have matching cars, shuffle and return 2
       if (matchingCars.length > 0) {
         const shuffled = matchingCars.sort(() => 0.5 - Math.random());
         const selected = shuffled.slice(0, 2);
-        console.log('Selected matching cars:', selected.map(c => c.id));
         return selected;
       }
       
@@ -531,7 +526,6 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Get current car's availability
       const currentCarAvailability = car.basic_details?.Availability;
-      console.log('Current car details:', car.id, 'Availability:', currentCarAvailability);
       
       // Now fetch random cars with matching availability
       const randomCars = await fetchRandomCars(carId, currentCarAvailability);
@@ -778,7 +772,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      console.log('Creating fullscreen viewer with images:', carImages.length);
       
       // Create fullscreen viewer AFTER the DOM is ready
       const fullscreenViewer = createFullscreenViewer(carImages, isRTL);
@@ -794,7 +787,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (fullscreenBtn) {
           fullscreenBtn.onclick = function(e) {
             e.preventDefault();
-            console.log('Fullscreen button clicked');
             fullscreenViewer.openViewer(0);
           };
         }
@@ -804,7 +796,6 @@ document.addEventListener("DOMContentLoaded", () => {
           img.onclick = function(e) {
             e.preventDefault();
             const index = parseInt(img.dataset.imageIndex);
-            console.log('Carousel image clicked, index:', index);
             fullscreenViewer.openViewer(index);
           };
         });
@@ -849,7 +840,6 @@ document.addEventListener("DOMContentLoaded", () => {
       
     })
     .catch(error => {
-      console.error('Error loading car details:', error);
       document.getElementById('car-details').innerHTML = `<p class="text-center text-red-500">${window.getTranslation ? window.getTranslation('loading-error') : 'Erreur lors du chargement'}</p>`;
     });
 });
