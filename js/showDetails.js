@@ -391,6 +391,59 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.addEventListener('keydown', keydownHandler);
     
+    // Touch/swipe support - NEW IMPROVED VERSION
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
+    let isSwiping = false;
+
+    viewer.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
+      isSwiping = true;
+    }, { passive: true });
+
+    viewer.addEventListener('touchmove', function(e) {
+      if (!isSwiping) return;
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      
+      // Only prevent default if it's a horizontal swipe
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    viewer.addEventListener('touchend', function(e) {
+      if (!isSwiping) return;
+      isSwiping = false;
+      
+      touchEndX = e.changedTouches[0].clientX;
+      touchEndY = e.changedTouches[0].clientY;
+      
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+      
+      // Only handle horizontal swipes
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        const swipeThreshold = 50;
+        
+        if (Math.abs(deltaX) > swipeThreshold) {
+          if (deltaX > 0) {
+            // Swipe right
+            if (isRTL) nextImage();
+            else prevImage();
+          } else {
+            // Swipe left
+            if (isRTL) prevImage();
+            else nextImage();
+          }
+        }
+      }
+    }, { passive: true });
+    
     // Cleanup function
     return () => {
       document.removeEventListener('keydown', keydownHandler);
