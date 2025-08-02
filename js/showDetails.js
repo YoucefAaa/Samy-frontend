@@ -194,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Fullscreen image viewer functionality - FIXED VERSION
+// Fullscreen image viewer functionality - FIXED VERSION
 function createFullscreenViewer(images, isRTL = false) {
   let currentIndex = 0;
   
@@ -209,14 +210,14 @@ function createFullscreenViewer(images, isRTL = false) {
       <!-- Previous button -->
       <button id="prev-fullscreen" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
         <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'}"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
       </button>
       
       <!-- Next button -->
       <button id="next-fullscreen" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
         <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'}"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
       </button>
       
@@ -243,6 +244,13 @@ function createFullscreenViewer(images, isRTL = false) {
     </div>
   `;
   
+  // Remove any existing fullscreen viewer
+  const existingViewer = document.getElementById('fullscreen-viewer');
+  if (existingViewer) {
+    existingViewer.remove();
+  }
+  
+  // Add the new viewer to the body
   document.body.insertAdjacentHTML('beforeend', viewerHTML);
   
   // Get elements AFTER they are added to the DOM
@@ -290,16 +298,14 @@ function createFullscreenViewer(images, isRTL = false) {
     updateFullscreenImage();
   }
   
-  // Event listeners - FIXED: Add proper event handling
-  if (closeBtn) {
-    closeBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      closeViewer();
-    });
-  }
+  // Event listeners - FIXED: Proper event handling
+  closeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeViewer();
+  });
   
-  if (prevBtn) {
+  if (prevBtn && images.length > 1) {
     prevBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -311,7 +317,7 @@ function createFullscreenViewer(images, isRTL = false) {
     });
   }
   
-  if (nextBtn) {
+  if (nextBtn && images.length > 1) {
     nextBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -323,17 +329,15 @@ function createFullscreenViewer(images, isRTL = false) {
     });
   }
   
-  // Thumbnail clicks - FIXED: Query elements after DOM insertion
-  setTimeout(() => {
-    document.querySelectorAll('.fullscreen-thumb').forEach(thumb => {
-      thumb.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        currentIndex = parseInt(thumb.dataset.index);
-        updateFullscreenImage();
-      });
+  // Thumbnail clicks - FIXED: Immediate event binding
+  document.querySelectorAll('.fullscreen-thumb').forEach(thumb => {
+    thumb.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      currentIndex = parseInt(thumb.dataset.index);
+      updateFullscreenImage();
     });
-  }, 100);
+  });
   
   // Close on background click
   viewer.addEventListener('click', (e) => {
@@ -342,16 +346,15 @@ function createFullscreenViewer(images, isRTL = false) {
     }
   });
   
-  // Keyboard navigation
+  // Keyboard navigation - FIXED: Better key handling
   const keydownHandler = (e) => {
     if (!viewer.classList.contains('hidden')) {
+      e.preventDefault();
       switch(e.key) {
         case 'Escape':
-          e.preventDefault();
           closeViewer();
           break;
         case 'ArrowLeft':
-          e.preventDefault();
           if (isRTL) {
             nextImage();
           } else {
@@ -359,7 +362,6 @@ function createFullscreenViewer(images, isRTL = false) {
           }
           break;
         case 'ArrowRight':
-          e.preventDefault();
           if (isRTL) {
             prevImage();
           } else {
@@ -370,29 +372,35 @@ function createFullscreenViewer(images, isRTL = false) {
     }
   };
   
-  // Remove any existing keydown listeners and add new one
+  // Clean up any existing listeners and add new one
   document.removeEventListener('keydown', keydownHandler);
   document.addEventListener('keydown', keydownHandler);
   
-  // Touch/swipe support for mobile
+  // Touch/swipe support for mobile - FIXED: Better swipe detection
   let touchStartX = 0;
   let touchEndX = 0;
+  let touchStartY = 0;
+  let touchEndY = 0;
   
   viewer.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
-  });
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
   
   viewer.addEventListener('touchend', (e) => {
     touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
     handleSwipe();
-  });
+  }, { passive: true });
   
   function handleSwipe() {
     const swipeThreshold = 50;
-    const swipeDistance = touchEndX - touchStartX;
+    const swipeDistanceX = touchEndX - touchStartX;
+    const swipeDistanceY = Math.abs(touchEndY - touchStartY);
     
-    if (Math.abs(swipeDistance) > swipeThreshold) {
-      if (swipeDistance > 0) {
+    // Only handle horizontal swipes (ignore vertical scrolling)
+    if (Math.abs(swipeDistanceX) > swipeThreshold && swipeDistanceY < swipeThreshold * 2) {
+      if (swipeDistanceX > 0) {
         // Swipe right
         if (isRTL) {
           nextImage();
@@ -410,7 +418,15 @@ function createFullscreenViewer(images, isRTL = false) {
     }
   }
   
-  return { openViewer, closeViewer };
+  // Cleanup function to remove event listeners when needed
+  function cleanup() {
+    document.removeEventListener('keydown', keydownHandler);
+    if (viewer && viewer.parentNode) {
+      viewer.parentNode.removeChild(viewer);
+    }
+  }
+  
+  return { openViewer, closeViewer, cleanup };
 }
 
   // Main fetch for car details
