@@ -193,175 +193,225 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Fullscreen image viewer functionality
-  function createFullscreenViewer(images, isRTL = false) {
-    let currentIndex = 0;
-    
-    const viewerHTML = `
-      <div id="fullscreen-viewer" class="fixed inset-0 bg-black bg-opacity-95 z-50 hidden flex items-center justify-center">
-        <!-- Close button -->
-        <button id="close-viewer" class="absolute top-4 ${isRTL ? 'left-4' : 'right-4'} z-60 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition">
-          <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-        
-        <!-- Previous button -->
-        <button id="prev-fullscreen" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
-          <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'}"></path>
-          </svg>
-        </button>
-        
-        <!-- Next button -->
-        <button id="next-fullscreen" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
-          <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'}"></path>
-          </svg>
-        </button>
-        
-        <!-- Image container -->
-        <div class="relative w-full h-full flex items-center justify-center p-4">
-          <img id="fullscreen-image" class="max-w-full max-h-full object-contain" src="" alt="">
-        </div>
-        
-        <!-- Image counter -->
-        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm ${images.length <= 1 ? 'hidden' : ''}">
-          <span id="image-counter">1 / ${images.length}</span>
-        </div>
-        
-        <!-- Thumbnail strip for mobile -->
-        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 rounded-lg p-2 md:hidden ${images.length <= 1 ? 'hidden' : ''}">
-          <div class="flex gap-2 max-w-screen overflow-x-auto">
-            ${images.map((img, index) => `
-              <img src="https://samy-auto.onrender.com${img}" 
-                   class="fullscreen-thumb w-12 h-12 object-cover rounded cursor-pointer opacity-50 hover:opacity-100 transition"
-                   data-index="${index}">
-            `).join('')}
-          </div>
+  // Fullscreen image viewer functionality - FIXED VERSION
+function createFullscreenViewer(images, isRTL = false) {
+  let currentIndex = 0;
+  
+  const viewerHTML = `
+    <div id="fullscreen-viewer" class="fixed inset-0 bg-black bg-opacity-95 z-50 hidden flex items-center justify-center">
+      <!-- Close button -->
+      <button id="close-viewer" class="absolute top-4 ${isRTL ? 'left-4' : 'right-4'} z-60 bg-black bg-opacity-50 text-white p-4 md:p-3 rounded-full hover:bg-opacity-70 transition">
+        <svg class="w-8 h-8 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      
+      <!-- Previous button -->
+      <button id="prev-fullscreen" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
+        <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'}"></path>
+        </svg>
+      </button>
+      
+      <!-- Next button -->
+      <button id="next-fullscreen" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
+        <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'}"></path>
+        </svg>
+      </button>
+      
+      <!-- Image container -->
+      <div class="relative w-full h-full flex items-center justify-center p-4">
+        <img id="fullscreen-image" class="max-w-full max-h-full object-contain" src="" alt="">
+      </div>
+      
+      <!-- Image counter -->
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm ${images.length <= 1 ? 'hidden' : ''}">
+        <span id="image-counter">1 / ${images.length}</span>
+      </div>
+      
+      <!-- Thumbnail strip for mobile -->
+      <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 rounded-lg p-2 md:hidden ${images.length <= 1 ? 'hidden' : ''}">
+        <div class="flex gap-2 max-w-screen overflow-x-auto">
+          ${images.map((img, index) => `
+            <img src="https://samy-auto.onrender.com${img}" 
+                 class="fullscreen-thumb w-12 h-12 object-cover rounded cursor-pointer opacity-50 hover:opacity-100 transition"
+                 data-index="${index}">
+          `).join('')}
         </div>
       </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', viewerHTML);
-    
-    const viewer = document.getElementById('fullscreen-viewer');
-    const fullscreenImage = document.getElementById('fullscreen-image');
-    const imageCounter = document.getElementById('image-counter');
-    const closeBtn = document.getElementById('close-viewer');
-    const prevBtn = document.getElementById('prev-fullscreen');
-    const nextBtn = document.getElementById('next-fullscreen');
-    
-    function updateFullscreenImage() {
-      if (images[currentIndex]) {
-        fullscreenImage.src = `https://samy-auto.onrender.com${images[currentIndex]}`;
-        if (imageCounter) {
-          imageCounter.textContent = `${currentIndex + 1} / ${images.length}`;
-        }
-        
-        // Update thumbnail opacity
-        document.querySelectorAll('.fullscreen-thumb').forEach((thumb, index) => {
-          thumb.classList.toggle('opacity-100', index === currentIndex);
-          thumb.classList.toggle('opacity-50', index !== currentIndex);
-        });
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', viewerHTML);
+  
+  // Get elements AFTER they are added to the DOM
+  const viewer = document.getElementById('fullscreen-viewer');
+  const fullscreenImage = document.getElementById('fullscreen-image');
+  const imageCounter = document.getElementById('image-counter');
+  const closeBtn = document.getElementById('close-viewer');
+  const prevBtn = document.getElementById('prev-fullscreen');
+  const nextBtn = document.getElementById('next-fullscreen');
+  
+  function updateFullscreenImage() {
+    if (images[currentIndex]) {
+      fullscreenImage.src = `https://samy-auto.onrender.com${images[currentIndex]}`;
+      if (imageCounter) {
+        imageCounter.textContent = `${currentIndex + 1} / ${images.length}`;
       }
+      
+      // Update thumbnail opacity
+      document.querySelectorAll('.fullscreen-thumb').forEach((thumb, index) => {
+        thumb.classList.toggle('opacity-100', index === currentIndex);
+        thumb.classList.toggle('opacity-50', index !== currentIndex);
+      });
     }
-    
-    function openViewer(startIndex = 0) {
-      currentIndex = startIndex;
-      viewer.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      updateFullscreenImage();
-    }
-    
-    function closeViewer() {
-      viewer.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-    
-    function nextImage() {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateFullscreenImage();
-    }
-    
-    function prevImage() {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      updateFullscreenImage();
-    }
-    
-    // Event listeners
-    closeBtn.addEventListener('click', closeViewer);
-    
-    if (prevBtn) {
-      prevBtn.addEventListener('click', isRTL ? nextImage : prevImage);
-    }
-    
-    if (nextBtn) {
-      nextBtn.addEventListener('click', isRTL ? prevImage : nextImage);
-    }
-    
-    // Thumbnail clicks
+  }
+  
+  function openViewer(startIndex = 0) {
+    currentIndex = startIndex;
+    viewer.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    updateFullscreenImage();
+  }
+  
+  function closeViewer() {
+    viewer.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+  
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateFullscreenImage();
+  }
+  
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateFullscreenImage();
+  }
+  
+  // Event listeners - FIXED: Add proper event handling
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeViewer();
+    });
+  }
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isRTL) {
+        nextImage();
+      } else {
+        prevImage();
+      }
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isRTL) {
+        prevImage();
+      } else {
+        nextImage();
+      }
+    });
+  }
+  
+  // Thumbnail clicks - FIXED: Query elements after DOM insertion
+  setTimeout(() => {
     document.querySelectorAll('.fullscreen-thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => {
+      thumb.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         currentIndex = parseInt(thumb.dataset.index);
         updateFullscreenImage();
       });
     });
-    
-    // Close on background click
-    viewer.addEventListener('click', (e) => {
-      if (e.target === viewer) {
-        closeViewer();
+  }, 100);
+  
+  // Close on background click
+  viewer.addEventListener('click', (e) => {
+    if (e.target === viewer) {
+      closeViewer();
+    }
+  });
+  
+  // Keyboard navigation
+  const keydownHandler = (e) => {
+    if (!viewer.classList.contains('hidden')) {
+      switch(e.key) {
+        case 'Escape':
+          e.preventDefault();
+          closeViewer();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          if (isRTL) {
+            nextImage();
+          } else {
+            prevImage();
+          }
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          if (isRTL) {
+            prevImage();
+          } else {
+            nextImage();
+          }
+          break;
       }
-    });
+    }
+  };
+  
+  // Remove any existing keydown listeners and add new one
+  document.removeEventListener('keydown', keydownHandler);
+  document.addEventListener('keydown', keydownHandler);
+  
+  // Touch/swipe support for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  viewer.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  
+  viewer.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+  
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const swipeDistance = touchEndX - touchStartX;
     
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (!viewer.classList.contains('hidden')) {
-        switch(e.key) {
-          case 'Escape':
-            closeViewer();
-            break;
-          case 'ArrowLeft':
-            isRTL ? nextImage() : prevImage();
-            break;
-          case 'ArrowRight':
-            isRTL ? prevImage() : nextImage();
-            break;
-        }
-      }
-    });
-    
-    // Touch/swipe support for mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    viewer.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-    
-    viewer.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    });
-    
-    function handleSwipe() {
-      const swipeThreshold = 50;
-      const swipeDistance = touchEndX - touchStartX;
-      
-      if (Math.abs(swipeDistance) > swipeThreshold) {
-        if (swipeDistance > 0) {
-          // Swipe right
-          isRTL ? nextImage() : prevImage();
+    if (Math.abs(swipeDistance) > swipeThreshold) {
+      if (swipeDistance > 0) {
+        // Swipe right
+        if (isRTL) {
+          nextImage();
         } else {
-          // Swipe left
-          isRTL ? prevImage() : nextImage();
+          prevImage();
+        }
+      } else {
+        // Swipe left
+        if (isRTL) {
+          prevImage();
+        } else {
+          nextImage();
         }
       }
     }
-    
-    return { openViewer, closeViewer };
   }
+  
+  return { openViewer, closeViewer };
+}
 
   // Main fetch for car details
   fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`)
