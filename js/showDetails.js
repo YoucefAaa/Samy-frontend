@@ -11,65 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Enhanced back navigation that preserves search state
-  function createSmartBackButton(isRTL = false) {
-    const savedState = sessionStorage.getItem('searchState');
-    let backUrl = '/';
-    let backText = window.getTranslation ? window.getTranslation('back-to-list') : 'Retour à la liste';
-    
-    if (savedState) {
-      try {
-        const state = JSON.parse(savedState);
-        // Check if search state is recent (within 30 minutes)
-        if (Date.now() - state.timestamp < 30 * 60 * 1000) {
-          // Determine which page to go back to based on availability
-          if (state.availability === 'sur commande') {
-            backUrl = 'cars-sur-commande.html';
-          } else {
-            backUrl = 'cars-available.html';
-          }
-          backText = window.getTranslation ? 
-            window.getTranslation('back-to-search-results') || 'Retour aux résultats de recherche' : 
-            'Retour aux résultats de recherche';
-        }
-      } catch (e) {
-        console.error('Error parsing search state:', e);
-      }
-    }
-    
-    return `
-      <a href="${backUrl}" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-[2.5rem] lg:text-base transition-colors">
-        <svg class="w-8 h-8 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M14 5l-7 7 7 7' : 'M10 19l-7-7m0 0l7-7m-7 7h18'}"></path>
-        </svg>
-        ${backText}
-      </a>
-    `;
-  }
-
-  // Enhanced header back button
-  function enhanceHeaderBackButton() {
-    const headerBackButton = document.querySelector('header a[href="/"]');
-    if (headerBackButton) {
-      const savedState = sessionStorage.getItem('searchState');
-      if (savedState) {
-        try {
-          const state = JSON.parse(savedState);
-          // Check if search state is recent
-          if (Date.now() - state.timestamp < 30 * 60 * 1000) {
-            if (state.availability === 'sur commande') {
-              headerBackButton.href = 'cars-sur-commande.html';
-            } else {
-              headerBackButton.href = 'cars-available.html';
-            }
-          }
-        } catch (e) {
-          console.error('Error parsing search state for header:', e);
-        }
-      }
-    }
-  }
-
   function translateValue(value, context = null) {
     if (!value) return value;
     
@@ -210,55 +151,225 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Function to fetch random cars that match the current car's availability
- async function fetchRandomCars(currentCarId, currentCarAvailability) {
-  try {
-    const response = await fetch('https://samy-auto.onrender.com/api/cars/');
-    if (!response.ok) throw new Error('Failed to fetch cars');
-    const allCars = await response.json();
-    
-    console.log('Current car availability:', currentCarAvailability);
-    console.log('Total cars fetched:', allCars.length);
-    
-    // Filter out current car and match availability
-    const matchingCars = allCars.filter(car => {
-      // Exclude current car
-      if (car.id === currentCarId) return false;
+  async function fetchRandomCars(currentCarId, currentCarAvailability) {
+    try {
+      const response = await fetch('https://samy-auto.onrender.com/api/cars/');
+      if (!response.ok) throw new Error('Failed to fetch cars');
+      const allCars = await response.json();
       
-      // Get car availability from basic_details.Availability
-      const carAvailability = car.basic_details?.Availability;
+      console.log('Current car availability:', currentCarAvailability);
+      console.log('Total cars fetched:', allCars.length);
       
-      console.log(`Car ${car.id} availability:`, carAvailability);
+      // Filter out current car and match availability
+      const matchingCars = allCars.filter(car => {
+        // Exclude current car
+        if (car.id === currentCarId) return false;
+        
+        // Get car availability from basic_details.Availability
+        const carAvailability = car.basic_details?.Availability;
+        
+        console.log(`Car ${car.id} availability:`, carAvailability);
+        
+        // Match availability exactly
+        return carAvailability === currentCarAvailability;
+      });
       
-      // Match availability exactly
-      return carAvailability === currentCarAvailability;
-    });
+      console.log('Matching cars found:', matchingCars.length);
+      
+      // If we have matching cars, shuffle and return 2
+      if (matchingCars.length > 0) {
+        const shuffled = matchingCars.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 2);
+        console.log('Selected matching cars:', selected.map(c => c.id));
+        return selected;
+      }
+      
+      // Return empty array if no matching cars found
+      return [];
+      
+    } catch (error) {
+      console.error('Error fetching random cars:', error);
+      return [];
+    }
+  }
+
+  // Fullscreen image viewer functionality
+  function createFullscreenViewer(images, isRTL = false) {
+    let currentIndex = 0;
     
-    console.log('Matching cars found:', matchingCars.length);
+    const viewerHTML = `
+      <div id="fullscreen-viewer" class="fixed inset-0 bg-black bg-opacity-95 z-50 hidden flex items-center justify-center">
+        <!-- Close button -->
+        <button id="close-viewer" class="absolute top-4 ${isRTL ? 'left-4' : 'right-4'} z-60 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition">
+          <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        
+        <!-- Previous button -->
+        <button id="prev-fullscreen" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
+          <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'}"></path>
+          </svg>
+        </button>
+        
+        <!-- Next button -->
+        <button id="next-fullscreen" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
+          <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isRTL ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'}"></path>
+          </svg>
+        </button>
+        
+        <!-- Image container -->
+        <div class="relative w-full h-full flex items-center justify-center p-4">
+          <img id="fullscreen-image" class="max-w-full max-h-full object-contain" src="" alt="">
+        </div>
+        
+        <!-- Image counter -->
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm ${images.length <= 1 ? 'hidden' : ''}">
+          <span id="image-counter">1 / ${images.length}</span>
+        </div>
+        
+        <!-- Thumbnail strip for mobile -->
+        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 rounded-lg p-2 md:hidden ${images.length <= 1 ? 'hidden' : ''}">
+          <div class="flex gap-2 max-w-screen overflow-x-auto">
+            ${images.map((img, index) => `
+              <img src="https://samy-auto.onrender.com${img}" 
+                   class="fullscreen-thumb w-12 h-12 object-cover rounded cursor-pointer opacity-50 hover:opacity-100 transition"
+                   data-index="${index}">
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
     
-    // If we have matching cars, shuffle and return 2
-    if (matchingCars.length > 0) {
-      const shuffled = matchingCars.sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, 2);
-      console.log('Selected matching cars:', selected.map(c => c.id));
-      return selected;
+    document.body.insertAdjacentHTML('beforeend', viewerHTML);
+    
+    const viewer = document.getElementById('fullscreen-viewer');
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    const imageCounter = document.getElementById('image-counter');
+    const closeBtn = document.getElementById('close-viewer');
+    const prevBtn = document.getElementById('prev-fullscreen');
+    const nextBtn = document.getElementById('next-fullscreen');
+    
+    function updateFullscreenImage() {
+      if (images[currentIndex]) {
+        fullscreenImage.src = `https://samy-auto.onrender.com${images[currentIndex]}`;
+        if (imageCounter) {
+          imageCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+        }
+        
+        // Update thumbnail opacity
+        document.querySelectorAll('.fullscreen-thumb').forEach((thumb, index) => {
+          thumb.classList.toggle('opacity-100', index === currentIndex);
+          thumb.classList.toggle('opacity-50', index !== currentIndex);
+        });
+      }
     }
     
-    // Return empty array if no matching cars found
-    return [];
+    function openViewer(startIndex = 0) {
+      currentIndex = startIndex;
+      viewer.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      updateFullscreenImage();
+    }
     
-  } catch (error) {
-    console.error('Error fetching random cars:', error);
-    return [];
+    function closeViewer() {
+      viewer.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateFullscreenImage();
+    }
+    
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateFullscreenImage();
+    }
+    
+    // Event listeners
+    closeBtn.addEventListener('click', closeViewer);
+    
+    if (prevBtn) {
+      prevBtn.addEventListener('click', isRTL ? nextImage : prevImage);
+    }
+    
+    if (nextBtn) {
+      nextBtn.addEventListener('click', isRTL ? prevImage : nextImage);
+    }
+    
+    // Thumbnail clicks
+    document.querySelectorAll('.fullscreen-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        currentIndex = parseInt(thumb.dataset.index);
+        updateFullscreenImage();
+      });
+    });
+    
+    // Close on background click
+    viewer.addEventListener('click', (e) => {
+      if (e.target === viewer) {
+        closeViewer();
+      }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!viewer.classList.contains('hidden')) {
+        switch(e.key) {
+          case 'Escape':
+            closeViewer();
+            break;
+          case 'ArrowLeft':
+            isRTL ? nextImage() : prevImage();
+            break;
+          case 'ArrowRight':
+            isRTL ? prevImage() : nextImage();
+            break;
+        }
+      }
+    });
+    
+    // Touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    viewer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    viewer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+    
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const swipeDistance = touchEndX - touchStartX;
+      
+      if (Math.abs(swipeDistance) > swipeThreshold) {
+        if (swipeDistance > 0) {
+          // Swipe right
+          isRTL ? nextImage() : prevImage();
+        } else {
+          // Swipe left
+          isRTL ? prevImage() : nextImage();
+        }
+      }
+    }
+    
+    return { openViewer, closeViewer };
   }
-}
 
-  // Main fetch for car details - FIXED VERSION
+  // Main fetch for car details
   fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`)
     .then(async (carResponse) => {
       if (!carResponse.ok) throw new Error('Car not found');
       const car = await carResponse.json();
       
-      // Get current car's availability - simplified to match API structure
+      // Get current car's availability
       const currentCarAvailability = car.basic_details?.Availability;
       console.log('Current car details:', car.id, 'Availability:', currentCarAvailability);
       
@@ -279,18 +390,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Handle empty images array with a proper placeholder
       const carImages = car.images && car.images.length > 0 ? car.images : ['data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2Y3ZjdmNyIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMThweCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlIEF2YWlsYWJsZTwvdGV4dD4KPC9zdmc+'];
-
-      // Display tags from both basic + technical with proper translation
-      const displayTags = [
-        car.basic_details?.Annee,
-        car.basic_details?.Etat,
-        car.technical_specs?.Energie,
-        car.technical_specs?.Motor,
-        car.technical_specs?.Power
-      ].filter(Boolean);
-
-      // Translate those tags properly
-      const translatedTags = displayTags.map(tag => translateValue(tag));
 
       // Handle color selection based on language
       let couleur = null;
@@ -359,10 +458,21 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="carousel-container relative overflow-hidden rounded-xl">
               <div class="carousel-track flex transition-transform duration-500 ease-in-out" id="carousel-track">
                 ${carImages.map((img, index) => `
-                  <img src="https://samy-auto.onrender.com${img}" alt="${car.title}" loading="lazy" class="carousel-slide w-full h-auto lg:h-96 object-cover flex-shrink-0">
+                  <img src="https://samy-auto.onrender.com${img}" 
+                       alt="${car.title}" 
+                       loading="lazy" 
+                       class="carousel-slide w-full h-auto lg:h-96 object-cover flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity" 
+                       data-image-index="${index}">
                 `).join('')}
               </div>
             </div>
+            
+            <!-- Fullscreen button overlay -->
+            <button id="fullscreen-btn" class="absolute top-4 ${isRTL ? 'left-4' : 'right-4'} bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition z-10">
+              <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+              </svg>
+            </button>
             
             <!-- Carousel Controls (only show if more than 1 image) -->
             ${carImages.length > 1 ? `
@@ -508,10 +618,26 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
+      // Create fullscreen viewer
+      const fullscreenViewer = createFullscreenViewer(carImages, isRTL);
+
       // Initialize carousel functionality only if there are multiple images
       if (carImages.length > 1) {
         initializeCarousel(carImages.length, isRTL);
       }
+      
+      // Add click handlers for fullscreen functionality
+      document.getElementById('fullscreen-btn').addEventListener('click', () => {
+        fullscreenViewer.openViewer(0);
+      });
+      
+      // Add click handlers to carousel images
+      document.querySelectorAll('.carousel-slide').forEach(img => {
+        img.addEventListener('click', () => {
+          const index = parseInt(img.dataset.imageIndex);
+          fullscreenViewer.openViewer(index);
+        });
+      });
       
       // Phone section toggle
       document.getElementById('phone-btn').addEventListener('click', () => {

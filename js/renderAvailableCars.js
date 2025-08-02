@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadMoreBtn.id = 'load-more-btn';
         loadMoreBtn.className = 'text-center mt-8';
         loadMoreBtn.innerHTML = `
-          <button onclick="loadMoreCars()" class="bg-blue-600 text-white px-8 py-3 rounded-full text-[2rem] lg:text-lg font-semibold hover:bg-blue-700 transition">
+          <button onclick="loadMoreCars()" class="bg-green-700 text-white px-8 py-3 rounded-full text-[2rem] lg:text-lg font-semibold hover:bg-blue-700 transition">
             ${window.getTranslation ? window.getTranslation('load-more') || 'Charger Plus' : 'Charger Plus'}
           </button>
         `;
