@@ -193,241 +193,323 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Fullscreen image viewer functionality - FIXED VERSION
-// Fullscreen image viewer functionality - FIXED VERSION
-function createFullscreenViewer(images, isRTL = false) {
-  let currentIndex = 0;
-  
-  const viewerHTML = `
-    <div id="fullscreen-viewer" class="fixed inset-0 bg-black bg-opacity-95 z-50 hidden flex items-center justify-center">
-      <!-- Close button -->
-      <button id="close-viewer" class="absolute top-4 ${isRTL ? 'left-4' : 'right-4'} z-60 bg-black bg-opacity-50 text-white p-4 md:p-3 rounded-full hover:bg-opacity-70 transition">
-        <svg class="w-8 h-8 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
-      
-      <!-- Previous button -->
-      <button id="prev-fullscreen" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
-        <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-      </button>
-      
-      <!-- Next button -->
-      <button id="next-fullscreen" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
-        <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-      </button>
-      
-      <!-- Image container -->
-      <div class="relative w-full h-full flex items-center justify-center p-4">
-        <img id="fullscreen-image" class="max-w-full max-h-full object-contain" src="" alt="">
-      </div>
-      
-      <!-- Image counter -->
-      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm ${images.length <= 1 ? 'hidden' : ''}">
-        <span id="image-counter">1 / ${images.length}</span>
-      </div>
-      
-      <!-- Thumbnail strip for mobile -->
-      <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 rounded-lg p-2 md:hidden ${images.length <= 1 ? 'hidden' : ''}">
-        <div class="flex gap-2 max-w-screen overflow-x-auto">
-          ${images.map((img, index) => `
-            <img src="https://samy-auto.onrender.com${img}" 
-                 class="fullscreen-thumb w-12 h-12 object-cover rounded cursor-pointer opacity-50 hover:opacity-100 transition"
-                 data-index="${index}">
-          `).join('')}
+  // Fullscreen image viewer functionality - COMPLETELY FIXED VERSION
+  function createFullscreenViewer(images, isRTL = false) {
+    let currentIndex = 0;
+    
+    // Remove any existing fullscreen viewer first
+    const existingViewer = document.getElementById('fullscreen-viewer');
+    if (existingViewer) {
+      existingViewer.remove();
+    }
+    
+    const viewerHTML = `
+      <div id="fullscreen-viewer" class="fixed inset-0 bg-black bg-opacity-95 z-50 hidden items-center justify-center">
+        <!-- Close button -->
+        <button id="close-viewer" class="absolute top-4 ${isRTL ? 'left-4' : 'right-4'} z-60 bg-black bg-opacity-50 text-white p-4 md:p-3 rounded-full hover:bg-opacity-70 transition">
+          <svg class="w-8 h-8 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        
+        <!-- Previous button -->
+        <button id="prev-fullscreen" class="absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
+          <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        
+        <!-- Next button -->
+        <button id="next-fullscreen" class="absolute ${isRTL ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2 z-60 bg-black bg-opacity-50 text-white p-5 md:p-3 rounded-full hover:bg-opacity-70 transition ${images.length <= 1 ? 'hidden' : ''}">
+          <svg class="w-10 h-10 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+        
+        <!-- Image container -->
+        <div class="relative w-full h-full flex items-center justify-center p-4">
+          <img id="fullscreen-image" class="max-w-full max-h-full object-contain" src="" alt="">
+        </div>
+        
+        <!-- Image counter -->
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm ${images.length <= 1 ? 'hidden' : ''}">
+          <span id="image-counter">1 / ${images.length}</span>
+        </div>
+        
+        <!-- Thumbnail strip for mobile -->
+        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 rounded-lg p-2 md:hidden ${images.length <= 1 ? 'hidden' : ''}">
+          <div class="flex gap-2 max-w-screen overflow-x-auto">
+            ${images.map((img, index) => `
+              <img src="https://samy-auto.onrender.com${img}" 
+                   class="fullscreen-thumb w-12 h-12 object-cover rounded cursor-pointer opacity-50 hover:opacity-100 transition"
+                   data-index="${index}">
+            `).join('')}
+          </div>
         </div>
       </div>
-    </div>
-  `;
-  
-  // Remove any existing fullscreen viewer
-  const existingViewer = document.getElementById('fullscreen-viewer');
-  if (existingViewer) {
-    existingViewer.remove();
-  }
-  
-  // Add the new viewer to the body
-  document.body.insertAdjacentHTML('beforeend', viewerHTML);
-  
-  // Get elements AFTER they are added to the DOM
-  const viewer = document.getElementById('fullscreen-viewer');
-  const fullscreenImage = document.getElementById('fullscreen-image');
-  const imageCounter = document.getElementById('image-counter');
-  const closeBtn = document.getElementById('close-viewer');
-  const prevBtn = document.getElementById('prev-fullscreen');
-  const nextBtn = document.getElementById('next-fullscreen');
-  
-  function updateFullscreenImage() {
-    if (images[currentIndex]) {
-      fullscreenImage.src = `https://samy-auto.onrender.com${images[currentIndex]}`;
-      if (imageCounter) {
-        imageCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+    `;
+    
+    // Add the viewer to the body
+    document.body.insertAdjacentHTML('beforeend', viewerHTML);
+    
+    // Wait a moment for DOM to be ready, then get elements
+    const viewer = document.getElementById('fullscreen-viewer');
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    const imageCounter = document.getElementById('image-counter');
+    
+    function updateFullscreenImage() {
+      if (images[currentIndex]) {
+        fullscreenImage.src = `https://samy-auto.onrender.com${images[currentIndex]}`;
+        if (imageCounter) {
+          imageCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+        }
+        
+        // Update thumbnail opacity
+        const thumbnails = document.querySelectorAll('.fullscreen-thumb');
+        thumbnails.forEach((thumb, index) => {
+          if (index === currentIndex) {
+            thumb.classList.remove('opacity-50');
+            thumb.classList.add('opacity-100');
+          } else {
+            thumb.classList.remove('opacity-100');
+            thumb.classList.add('opacity-50');
+          }
+        });
+      }
+    }
+    
+    function openViewer(startIndex = 0) {
+      currentIndex = Math.max(0, Math.min(startIndex, images.length - 1));
+      viewer.style.display = 'flex';
+      viewer.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      updateFullscreenImage();
+    }
+    
+    function closeViewer() {
+      viewer.style.display = 'none';
+      viewer.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateFullscreenImage();
+    }
+    
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateFullscreenImage();
+    }
+    
+    // Set up event listeners immediately
+    function setupEventListeners() {
+      const closeBtn = document.getElementById('close-viewer');
+      const prevBtn = document.getElementById('prev-fullscreen');
+      const nextBtn = document.getElementById('next-fullscreen');
+      
+      console.log('Setting up fullscreen event listeners...');
+      console.log('Close button found:', !!closeBtn);
+      console.log('Prev button found:', !!prevBtn);
+      console.log('Next button found:', !!nextBtn);
+      
+      // Close button
+      if (closeBtn) {
+        closeBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Close button clicked');
+          closeViewer();
+        };
       }
       
-      // Update thumbnail opacity
-      document.querySelectorAll('.fullscreen-thumb').forEach((thumb, index) => {
-        thumb.classList.toggle('opacity-100', index === currentIndex);
-        thumb.classList.toggle('opacity-50', index !== currentIndex);
+      // Previous button
+      if (prevBtn && images.length > 1) {
+        prevBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Previous button clicked');
+          if (isRTL) {
+            nextImage();
+          } else {
+            prevImage();
+          }
+        };
+      }
+      
+      // Next button
+      if (nextBtn && images.length > 1) {
+        nextBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Next button clicked');
+          if (isRTL) {
+            prevImage();
+          } else {
+            nextImage();
+          }
+        };
+      }
+      
+      // Thumbnail clicks
+      const thumbnails = document.querySelectorAll('.fullscreen-thumb');
+      thumbnails.forEach(thumb => {
+        thumb.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const index = parseInt(thumb.dataset.index);
+          console.log('Thumbnail clicked, index:', index);
+          currentIndex = index;
+          updateFullscreenImage();
+        };
+      });
+      
+      // Close on background click
+      viewer.onclick = function(e) {
+        if (e.target === viewer) {
+          console.log('Background clicked');
+          closeViewer();
+        }
+      };
+      
+      // Keyboard navigation
+      const keydownHandler = function(e) {
+        if (viewer.style.display === 'flex' && !viewer.classList.contains('hidden')) {
+          console.log('Key pressed in fullscreen:', e.key);
+          switch(e.key) {
+            case 'Escape':
+              e.preventDefault();
+              closeViewer();
+              break;
+            case 'ArrowLeft':
+              e.preventDefault();
+              if (isRTL) {
+                nextImage();
+              } else {
+                prevImage();
+              }
+              break;
+            case 'ArrowRight':
+              e.preventDefault();
+              if (isRTL) {
+                prevImage();
+              } else {
+                nextImage();
+              }
+              break;
+          }
+        }
+      };
+      
+      // Remove existing listener and add new one
+      document.removeEventListener('keydown', keydownHandler);
+      document.addEventListener('keydown', keydownHandler);
+      
+      // Touch/swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      viewer.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+      
+      viewer.addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        const swipeDistance = touchEndX - touchStartX;
+        const swipeThreshold = 50;
+        
+        if (Math.abs(swipeDistance) > swipeThreshold) {
+          if (swipeDistance > 0) {
+            // Swipe right
+            if (isRTL) {
+              nextImage();
+            } else {
+              prevImage();
+            }
+          } else {
+            // Swipe left
+            if (isRTL) {
+              prevImage();
+            } else {
+              nextImage();
+            }
+          }
+        }
       });
     }
-  }
-  
-  function openViewer(startIndex = 0) {
-    currentIndex = startIndex;
-    viewer.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    updateFullscreenImage();
-  }
-  
-  function closeViewer() {
-    viewer.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-  
-  function nextImage() {
-    currentIndex = (currentIndex + 1) % images.length;
-    updateFullscreenImage();
-  }
-  
-  function prevImage() {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    updateFullscreenImage();
-  }
-  
-  // Event listeners - FIXED: Proper event handling
-  closeBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    closeViewer();
-  });
-  
-  if (prevBtn && images.length > 1) {
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isRTL) {
-        nextImage();
-      } else {
-        prevImage();
-      }
-    });
-  }
-  
-  if (nextBtn && images.length > 1) {
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isRTL) {
-        prevImage();
-      } else {
-        nextImage();
-      }
-    });
-  }
-  
-  // Thumbnail clicks - FIXED: Immediate event binding
-  document.querySelectorAll('.fullscreen-thumb').forEach(thumb => {
-    thumb.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      currentIndex = parseInt(thumb.dataset.index);
-      updateFullscreenImage();
-    });
-  });
-  
-  // Close on background click
-  viewer.addEventListener('click', (e) => {
-    if (e.target === viewer) {
-      closeViewer();
-    }
-  });
-  
-  // Keyboard navigation - FIXED: Better key handling
-  const keydownHandler = (e) => {
-    if (!viewer.classList.contains('hidden')) {
-      e.preventDefault();
-      switch(e.key) {
-        case 'Escape':
-          closeViewer();
-          break;
-        case 'ArrowLeft':
-          if (isRTL) {
-            nextImage();
-          } else {
-            prevImage();
-          }
-          break;
-        case 'ArrowRight':
-          if (isRTL) {
-            prevImage();
-          } else {
-            nextImage();
-          }
-          break;
-      }
-    }
-  };
-  
-  // Clean up any existing listeners and add new one
-  document.removeEventListener('keydown', keydownHandler);
-  document.addEventListener('keydown', keydownHandler);
-  
-  // Touch/swipe support for mobile - FIXED: Better swipe detection
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let touchStartY = 0;
-  let touchEndY = 0;
-  
-  viewer.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  }, { passive: true });
-  
-  viewer.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-  }, { passive: true });
-  
-  function handleSwipe() {
-    const swipeThreshold = 50;
-    const swipeDistanceX = touchEndX - touchStartX;
-    const swipeDistanceY = Math.abs(touchEndY - touchStartY);
     
-    // Only handle horizontal swipes (ignore vertical scrolling)
-    if (Math.abs(swipeDistanceX) > swipeThreshold && swipeDistanceY < swipeThreshold * 2) {
-      if (swipeDistanceX > 0) {
-        // Swipe right
-        if (isRTL) {
-          nextImage();
-        } else {
-          prevImage();
-        }
-      } else {
-        // Swipe left
-        if (isRTL) {
-          prevImage();
-        } else {
-          nextImage();
-        }
+    // Set up event listeners immediately after DOM insertion
+    setupEventListeners();
+    
+    return { openViewer, closeViewer };
+  }
+
+  function initializeCarousel(imageCount, isRTL = false) {
+    let currentSlide = 0;
+    const track = document.getElementById('carousel-track');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    
+    // Auto-slide functionality
+    let autoSlideInterval = setInterval(() => {
+      currentSlide = (currentSlide + 1) % imageCount;
+      updateCarousel();
+    }, 3000);
+
+    // Manual controls
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        clearInterval(autoSlideInterval);
+        currentSlide = isRTL
+          ? (currentSlide + 1) % imageCount
+          : (currentSlide - 1 + imageCount) % imageCount;
+        updateCarousel();
+        restartAutoSlide();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        clearInterval(autoSlideInterval);
+        currentSlide = isRTL
+          ? (currentSlide - 1 + imageCount) % imageCount
+          : (currentSlide + 1) % imageCount;
+        updateCarousel();
+        restartAutoSlide();
+      });
+    }
+
+    // Indicator clicks
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        clearInterval(autoSlideInterval);
+        currentSlide = index;
+        updateCarousel();
+        restartAutoSlide();
+      });
+    });
+
+    function updateCarousel() {
+      if (track) {
+        track.style.transform = isRTL
+          ? `translateX(${currentSlide * 100}%)`
+          : `translateX(-${currentSlide * 100}%)`;
       }
+      indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('bg-blue-600', index === currentSlide);
+        indicator.classList.toggle('bg-gray-300', index !== currentSlide);
+      });
+    }
+
+    function restartAutoSlide() {
+      autoSlideInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % imageCount;
+        updateCarousel();
+      }, 3000);
     }
   }
-  
-  // Cleanup function to remove event listeners when needed
-  function cleanup() {
-    document.removeEventListener('keydown', keydownHandler);
-    if (viewer && viewer.parentNode) {
-      viewer.parentNode.removeChild(viewer);
-    }
-  }
-  
-  return { openViewer, closeViewer, cleanup };
-}
 
   // Main fetch for car details
   fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`)
@@ -684,7 +766,9 @@ function createFullscreenViewer(images, isRTL = false) {
         </div>
       `;
 
-      // Create fullscreen viewer
+      console.log('Creating fullscreen viewer with images:', carImages.length);
+      
+      // Create fullscreen viewer AFTER the DOM is ready
       const fullscreenViewer = createFullscreenViewer(carImages, isRTL);
 
       // Initialize carousel functionality only if there are multiple images
@@ -692,119 +776,68 @@ function createFullscreenViewer(images, isRTL = false) {
         initializeCarousel(carImages.length, isRTL);
       }
       
-      // Add click handlers for fullscreen functionality
-      document.getElementById('fullscreen-btn').addEventListener('click', () => {
-        fullscreenViewer.openViewer(0);
-      });
+      // Add click handlers for fullscreen functionality - USE PROPER EVENT BINDING
+      setTimeout(() => {
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        if (fullscreenBtn) {
+          fullscreenBtn.onclick = function(e) {
+            e.preventDefault();
+            console.log('Fullscreen button clicked');
+            fullscreenViewer.openViewer(0);
+          };
+        }
+        
+        // Add click handlers to carousel images
+        document.querySelectorAll('.carousel-slide').forEach(img => {
+          img.onclick = function(e) {
+            e.preventDefault();
+            const index = parseInt(img.dataset.imageIndex);
+            console.log('Carousel image clicked, index:', index);
+            fullscreenViewer.openViewer(index);
+          };
+        });
+        
+        // Phone section toggle
+        const phoneBtn = document.getElementById('phone-btn');
+        if (phoneBtn) {
+          phoneBtn.onclick = function() {
+            const phoneSection = document.getElementById('phone-section');
+            phoneSection.classList.toggle('hidden');
+          };
+        }
+
+        // Location button
+        const locationBtn = document.getElementById('location-btn');
+        if (locationBtn) {
+          locationBtn.onclick = function() {
+            window.open('https://maps.app.goo.gl/QunQmeik6mh7fxY19', '_blank');
+          };
+        }
+
+        // Phone buttons functionality
+        document.querySelectorAll('.call-btn').forEach(btn => {
+          btn.onclick = function() {
+            const number = btn.dataset.number;
+            window.location.href = `tel:+213${number.replace(/\s+/g, '')}`;
+          };
+        });
+
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+          btn.onclick = function() {
+            const number = btn.dataset.number;
+            navigator.clipboard.writeText(number).then(() => {
+              btn.textContent = window.getTranslation ? window.getTranslation('copied') : 'Copié!';
+              setTimeout(() => {
+                btn.textContent = window.getTranslation ? window.getTranslation('copy') : 'Copier';
+              }, 2000);
+            });
+          };
+        });
+      }, 100);
       
-      // Add click handlers to carousel images
-      document.querySelectorAll('.carousel-slide').forEach(img => {
-        img.addEventListener('click', () => {
-          const index = parseInt(img.dataset.imageIndex);
-          fullscreenViewer.openViewer(index);
-        });
-      });
-      
-      // Phone section toggle
-      document.getElementById('phone-btn').addEventListener('click', () => {
-        const phoneSection = document.getElementById('phone-section');
-        phoneSection.classList.toggle('hidden');
-      });
-
-      // Location button
-      document.getElementById('location-btn').addEventListener('click', () => {
-        window.open('https://maps.app.goo.gl/QunQmeik6mh7fxY19', '_blank');
-      });
-
-      // Phone buttons functionality
-      document.querySelectorAll('.call-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const number = btn.dataset.number;
-          window.location.href = `tel:+213${number.replace(/\s+/g, '')}`;
-        });
-      });
-
-      document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const number = btn.dataset.number;
-          navigator.clipboard.writeText(number).then(() => {
-            btn.textContent = window.getTranslation ? window.getTranslation('copied') : 'Copié!';
-            setTimeout(() => {
-              btn.textContent = window.getTranslation ? window.getTranslation('copy') : 'Copier';
-            }, 2000);
-          });
-        });
-      });
     })
     .catch(error => {
       console.error('Error loading car details:', error);
       document.getElementById('car-details').innerHTML = `<p class="text-center text-red-500">${window.getTranslation ? window.getTranslation('loading-error') : 'Erreur lors du chargement'}</p>`;
     });
 });
-
-function initializeCarousel(imageCount, isRTL = false) {
-  let currentSlide = 0;
-  const track = document.getElementById('carousel-track');
-  const indicators = document.querySelectorAll('.carousel-indicator');
-  
-  // Auto-slide functionality
-  let autoSlideInterval = setInterval(() => {
-    currentSlide = (currentSlide + 1) % imageCount;
-    updateCarousel();
-  }, 3000);
-
-  // Manual controls
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-  
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      clearInterval(autoSlideInterval);
-      currentSlide = isRTL
-        ? (currentSlide + 1) % imageCount
-        : (currentSlide - 1 + imageCount) % imageCount;
-      updateCarousel();
-      restartAutoSlide();
-    });
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      clearInterval(autoSlideInterval);
-      currentSlide = isRTL
-        ? (currentSlide - 1 + imageCount) % imageCount
-        : (currentSlide + 1) % imageCount;
-      updateCarousel();
-      restartAutoSlide();
-    });
-  }
-
-  // Indicator clicks
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => {
-      clearInterval(autoSlideInterval);
-      currentSlide = index;
-      updateCarousel();
-      restartAutoSlide();
-    });
-  });
-
-  function updateCarousel() {
-    if (track) {
-      track.style.transform = isRTL
-        ? `translateX(${currentSlide * 100}%)`
-        : `translateX(-${currentSlide * 100}%)`;
-    }
-    indicators.forEach((indicator, index) => {
-      indicator.classList.toggle('bg-blue-600', index === currentSlide);
-      indicator.classList.toggle('bg-gray-300', index !== currentSlide);
-    });
-  }
-
-  function restartAutoSlide() {
-    autoSlideInterval = setInterval(() => {
-      currentSlide = (currentSlide + 1) % imageCount;
-      updateCarousel();
-    }, 3000);
-  }
-}
