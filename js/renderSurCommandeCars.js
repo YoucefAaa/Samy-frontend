@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hideNoResults();
     
     // Fetch cars with 'sur commande' filter
-    fetch('https://samy-auto.onrender.com/api/cars/?availability=sur commande')
+    fetch('https://samy-auto-p6lu.onrender.com/api/cars/?availability=sur commande')
       .then(res => res.json())
       .then(cars => {
         allCars = cars; // Store all cars
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
     const imageUrl = car.images.length > 0 
-      ? `https://samy-auto.onrender.com${car.images[0]}` 
+      ? `https://samy-auto-p6lu.onrender.com${car.images[0]}` 
       : 'images/default.jpg';
 
     

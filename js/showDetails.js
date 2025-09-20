@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to fetch random cars that match the current car's availability
   async function fetchRandomCars(currentCarId, currentCarAvailability) {
     try {
-      const response = await fetch('https://samy-auto.onrender.com/api/cars/');
+      const response = await fetch('https://samy-auto-p6lu.onrender.com/api/cars/');
       if (!response.ok) throw new Error('Failed to fetch cars');
       const allCars = await response.json();
       
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 rounded-lg p-2 md:hidden ${images.length <= 1 ? 'hidden' : ''}" style="z-index: 100;">
         <div class="flex gap-2 max-w-screen overflow-x-auto">
           ${images.map((img, index) => `
-            <img src="https://samy-auto.onrender.com${img}" 
+            <img src="https://samy-auto-p6lu.onrender.com${img}" 
                  class="fullscreen-thumb w-12 h-12 object-cover rounded cursor-pointer opacity-50 hover:opacity-100 transition"
                  data-index="${index}">
           `).join('')}
@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function updateFullscreenImage() {
     if (images[currentIndex]) {
-      fullscreenImage.src = `https://samy-auto.onrender.com${images[currentIndex]}`;
+      fullscreenImage.src = `https://samy-auto-p6lu.onrender.com${images[currentIndex]}`;
       if (imageCounter) {
         imageCounter.textContent = `${currentIndex + 1} / ${images.length}`;
       }
@@ -519,7 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Main fetch for car details
-  fetch(`https://samy-auto.onrender.com/api/cars/${carId}/`)
+  fetch(`https://samy-auto-p6lu.onrender.com/api/cars/${carId}/`)
     .then(async (carResponse) => {
       if (!carResponse.ok) throw new Error('Car not found');
       const car = await carResponse.json();
@@ -612,7 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="carousel-container relative overflow-hidden rounded-xl">
               <div class="carousel-track flex transition-transform duration-500 ease-in-out" id="carousel-track">
                 ${carImages.map((img, index) => `
-                  <img src="https://samy-auto.onrender.com${img}" 
+                  <img src="https://samy-auto-p6lu.onrender.com${img}" 
                        alt="${car.title}" 
                        loading="lazy" 
                        class="carousel-slide w-full h-auto lg:h-96 object-cover flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity" 
@@ -742,7 +742,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 return `
                   <div class="bg-white rounded-2xl shadow p-6 hover:shadow-2xl transition duration-300">
-                    <img src="https://samy-auto.onrender.com${randomCarImage}" alt="${randomCar.title}" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
+                    <img src="https://samy-auto-p6lu.onrender.com${randomCarImage}" alt="${randomCar.title}" class="rounded-xl mb-3 w-full h-[40rem] lg:h-48 object-cover">
                     <h3 class="text-[4.2rem] lg:text-2xl font-bold mb-4 text-center">${randomCar.title_ar && isRTL ? randomCar.title_ar : randomCar.title}</h3>
                     <div class="flex flex-wrap gap-2 mb-[4.2rem] lg:mb-[2.4rem]">
                       ${displayTags.map(tag => `<span class="bg-blue-100 text-blue-700 text-[2.1rem] lg:text-sm px-6 lg:px-3 py-2 lg:py-2 rounded-md">${tag}</span>`).join('')}

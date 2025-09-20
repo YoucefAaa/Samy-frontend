@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hideNoResults();
     
     // Fetch cars with 'Disponible' filter
-    fetch('https://samy-auto.onrender.com/api/cars/?availability=Disponible')
+    fetch('https://samy-auto-p6lu.onrender.com/api/cars/?availability=Disponible')
       .then(res => res.json())
       .then(cars => {
         allCars = cars; // Store all cars
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fallback image if missing
     const imageUrl = car.images.length > 0 
-      ? `https://samy-auto.onrender.com${car.images[0]}` 
+      ? `https://samy-auto-p6lu.onrender.com${car.images[0]}` 
       : 'images/default.jpg';
 
     // Add availability badge (should be "Disponible" for all cars on this page)

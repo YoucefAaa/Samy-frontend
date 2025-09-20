@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const availability = getCurrentPageAvailability();
     
     try {
-      const response = await fetch(`https://samy-auto.onrender.com/api/cars/autocomplete/?q=${encodeURIComponent(query)}&availability=${encodeURIComponent(availability)}`);
+      const response = await fetch(`https://samy-auto-p6lu.onrender.com/api/cars/autocomplete/?q=${encodeURIComponent(query)}&availability=${encodeURIComponent(availability)}`);
       
       if (!response.ok) throw new Error('Autocomplete request failed');
       
@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     try {
-      const response = await fetch(`https://samy-auto.onrender.com/api/cars/search/?q=${encodeURIComponent(query)}&availability=${encodeURIComponent(availability)}`);
+      const response = await fetch(`https://samy-auto-p6lu.onrender.com/api/cars/search/?q=${encodeURIComponent(query)}&availability=${encodeURIComponent(availability)}`);
       
       if (!response.ok) throw new Error('Search request failed');
       
@@ -390,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const userTagsClean = (userTags && userTags.length > 0) ? userTags : [];
     
     const imageUrl = car.images.length > 0 
-      ? `https://samy-auto.onrender.com${car.images[0]}` 
+      ? `https://samy-auto-p6lu.onrender.com${car.images[0]}` 
       : 'images/default.jpg';
 
     const availabilityBadge = createAvailabilityBadge(car.basic_details?.Availability);

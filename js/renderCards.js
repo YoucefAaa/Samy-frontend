@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showLoading(true);
     hideNoResults();
     
-    fetch('https://samy-auto.onrender.com/api/cars/')
+    fetch('https://samy-auto-p6lu.onrender.com/api/cars/')
       .then(res => res.json())
       .then(cars => {
         allCars = cars;
